@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trader AI — Previsões de Criptomoedas com Inteligência Artificial</title>
-    <meta name="description" content="Trader AI — Sistema de previsão de criptomoedas com IA proprietária. 10 horizontes temporais. Acurácia real verificada na Binance. Dashboard profissional.">
+    <meta name="color-scheme" content="light">
+    <title>Trader AI — Sinais de Crypto com IA no Telegram</title>
+    <meta name="description" content="IA prevê alta ou baixa de criptomoedas. Você recebe o sinal no Telegram. Acurácia verificada em 200.000+ trades. R$ 47/mês. 3 dias grátis.">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:,">
 
-    <!-- Modal de Termos e Política -->
     <style>
         /* ── Modal ── */
         .modal-overlay {
@@ -78,33 +78,47 @@
         .guarantee-badge strong { display: block; color: #10b981; font-size: .95rem; margin-bottom: .2rem; }
         .guarantee-badge p { margin: 0; color: #94a3b8; font-size: .88rem; line-height: 1.5; }
 
-        /* ── Seção "Como funciona" ── */
-        .how-section { padding: 5rem 0; background: #080f1a; }
-        .how-section h2 { text-align: center; font-size: 2rem; margin-bottom: .5rem; color: #f1f5f9; }
-        .how-section .section-sub { text-align: center; color: #64748b; margin-bottom: 3rem; }
-        .how-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
-        .how-step {
-            background: #0d1829;
-            border: 1px solid #1e293b;
+        /* ── 3 Passos ── */
+        .steps-section { padding: 5rem 0; background: #060b14; }
+        .steps-section h2 { text-align: center; font-size: 2rem; margin-bottom: .5rem; color: #f1f5f9; }
+        .steps-section .section-sub { text-align: center; color: #64748b; margin-bottom: 3rem; }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .step-card {
+            background: #0a1020;
+            border: 1px solid #1a2540;
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 2rem 1.5rem;
+            text-align: center;
             position: relative;
         }
-        .how-step-num {
+        .step-num {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 2rem;
-            height: 2rem;
+            width: 2.5rem;
+            height: 2.5rem;
             border-radius: 50%;
             background: rgba(6,182,212,.15);
             color: #06b6d4;
-            font-weight: 700;
-            font-size: .9rem;
-            margin-bottom: .85rem;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
         }
-        .how-step h4 { color: #e2e8f0; font-size: 1rem; margin: 0 0 .4rem; }
-        .how-step p { color: #64748b; font-size: .88rem; margin: 0; line-height: 1.6; }
+        .step-card h4 { color: #e2e8f0; font-size: 1.1rem; margin: 0 0 .5rem; }
+        .step-card p { color: #64748b; font-size: .9rem; margin: 0; line-height: 1.6; }
+        .step-arrow {
+            position: absolute;
+            right: -1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #1e293b;
+            font-size: 1.5rem;
+            z-index: 1;
+        }
 
         /* ── Footer legal ── */
         .footer-legal {
@@ -114,13 +128,17 @@
         }
         .footer-legal a { color: #64748b; text-decoration: underline; cursor: pointer; }
         .footer-legal a:hover { color: #94a3b8; }
+
+        @media (max-width: 768px) {
+            .steps-grid { grid-template-columns: 1fr; }
+            .step-arrow { display: none; }
+        }
     </style>
 </head>
 <body>
 
 <!-- ══ MODAIS ══════════════════════════════════════════════════════════════ -->
 
-<!-- Termos de Uso -->
 <div class="modal-overlay" id="modal-terms">
     <div class="modal-box">
         <div class="modal-header">
@@ -129,45 +147,34 @@
         </div>
         <div class="modal-body">
             <p>Última atualização: junho de 2026.</p>
-
             <h4>1. Aceitação</h4>
             <p>Ao assinar ou utilizar o Trader AI você concorda integralmente com estes Termos. Se não concordar, não utilize o serviço.</p>
-
             <h4>2. Natureza do serviço</h4>
             <p>O Trader AI é um sistema de previsão baseado em inteligência artificial que analisa dados históricos de criptomoedas e emite estimativas de direção de preço. <strong>Não é serviço de consultoria financeira, gestão de investimentos ou corretora.</strong> Nenhuma previsão constitui indicação ou recomendação de compra ou venda.</p>
-
             <h4>3. Riscos</h4>
             <p>Mercados de criptomoedas são voláteis e imprevisíveis. Resultados passados não garantem resultados futuros. O usuário é o único responsável por suas decisões de trading e por eventuais perdas financeiras.</p>
-
             <h4>4. Acurácia</h4>
             <p>As métricas de acurácia divulgadas referem-se a previsões binárias (alta ou baixa) verificadas contra preços reais da Binance. Acurácia acima de 50 % indica capacidade preditiva, mas não elimina risco de perda.</p>
-
             <h4>5. Assinatura e pagamento</h4>
             <ul>
                 <li>O plano mensal é cobrado via PIX no valor de R$ 47,00 por ciclo de 30 dias.</li>
                 <li>O acesso é ativado após confirmação manual do pagamento via WhatsApp.</li>
                 <li>O cancelamento pode ser solicitado a qualquer momento sem multa.</li>
             </ul>
-
             <h4>6. Garantia de reembolso</h4>
             <p>Oferecemos reembolso integral em até 7 dias corridos após o pagamento, sem necessidade de justificativa. Solicitações devem ser feitas via WhatsApp ou e-mail.</p>
-
             <h4>7. Propriedade intelectual</h4>
             <p>Todo o código, modelos, dados e conteúdo do Trader AI são de propriedade exclusiva dos seus desenvolvedores. É proibida a reprodução, revenda ou engenharia reversa sem autorização prévia por escrito.</p>
-
             <h4>8. Limitação de responsabilidade</h4>
             <p>O Trader AI não se responsabiliza por perdas diretas, indiretas ou consequentes decorrentes do uso das previsões. A responsabilidade máxima fica limitada ao valor pago nos últimos 30 dias.</p>
-
             <h4>9. Modificações</h4>
             <p>Estes termos podem ser atualizados a qualquer momento. O uso continuado do serviço após a publicação de alterações constitui aceitação das mudanças.</p>
-
             <h4>10. Foro</h4>
             <p>Fica eleito o foro da Comarca de Bauru/SP para dirimir quaisquer controvérsias.</p>
         </div>
     </div>
 </div>
 
-<!-- Política de Privacidade -->
 <div class="modal-overlay" id="modal-privacy">
     <div class="modal-box">
         <div class="modal-header">
@@ -176,7 +183,6 @@
         </div>
         <div class="modal-body">
             <p>Última atualização: junho de 2026.</p>
-
             <h4>1. Dados coletados</h4>
             <p>Coletamos apenas os dados estritamente necessários para prestar o serviço:</p>
             <ul>
@@ -184,19 +190,14 @@
                 <li>Comprovante de pagamento enviado voluntariamente.</li>
                 <li>Dados de uso do dashboard (logs anônimos para melhoria do sistema).</li>
             </ul>
-
             <h4>2. Uso dos dados</h4>
             <p>Os dados são usados exclusivamente para: ativar o acesso, enviar sinais no grupo VIP, prestar suporte e melhorar o modelo de IA. Não vendemos, alugamos nem compartilhamos dados pessoais com terceiros.</p>
-
             <h4>3. Armazenamento</h4>
             <p>Os dados são armazenados em servidores com criptografia. Comprovantes enviados via WhatsApp são excluídos após a confirmação do pagamento.</p>
-
             <h4>4. Seus direitos (LGPD)</h4>
             <p>Nos termos da Lei 13.709/2018, você pode solicitar a qualquer momento: acesso, correção, portabilidade ou exclusão dos seus dados. Basta entrar em contato via WhatsApp.</p>
-
             <h4>5. Cookies</h4>
             <p>O site utiliza apenas cookies técnicos essenciais para funcionamento. Não utilizamos cookies de rastreamento ou publicidade.</p>
-
             <h4>6. Contato</h4>
             <p>Dúvidas sobre privacidade: <a href="https://wa.me/14991840826" target="_blank">WhatsApp (14) 99184-0826</a>.</p>
         </div>
@@ -217,29 +218,34 @@
                 <a href="#resultados">Resultados</a>
                 <a href="#planos">Planos</a>
                 <a href="#faq">FAQ</a>
-                <a href="#pagar" class="nav-cta">Assinar</a>
+                <a href="#pagar" class="nav-cta">Testar grátis</a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero -->
+    <!-- ══ HERO — otimizado para 10 segundos ══════════════════════════════ -->
     <section class="hero">
         <div class="container">
             <div class="hero-grid">
                 <div class="hero-text">
+
                     <div class="hero-badge">
                         <span class="pulse"></span>
-                        23.000+ trades verificados na Binance
+                        200.000+ trades auditados publicamente
                     </div>
+
+                    <!-- O QUE É + COMO FUNCIONA em 2 linhas -->
                     <h1>
-                        Previsões de Crypto com
-                        <span class="gradient-text">Inteligência Artificial</span>
-                        Proprietária
+                        IA que prevê crypto.<br>
+                        Sinal chega no
+                        <span class="gradient-text">Telegram.</span>
                     </h1>
+
+                    <!-- SUBTÍTULO: como funciona em 1 frase -->
                     <p class="hero-desc">
-                        Uma rede neural treinada exclusivamente em dados de criptomoedas prevê a direção do preço em 10 horizontes de tempo — do scalping de 5 segundos ao swing de 1 dia. Cada previsão é verificada ao vivo contra o preço real da Binance e registrada publicamente.
+                        A IA analisa BTC, ETH, BNB e SOL em tempo real. Quando detecta uma oportunidade, você recebe: moeda, direção (compra ou venda) e horizonte de tempo. Acurácia verificada — não é backtest.
                     </p>
-                    
+
                     <!-- Métricas -->
                     <div class="hero-metrics">
                         <div class="hero-metric">
@@ -248,25 +254,25 @@
                         </div>
                         <div class="hero-metric-divider"></div>
                         <div class="hero-metric">
-                            <span class="hero-metric-value">10</span>
-                            <span class="hero-metric-label">Horizontes<br>de Previsão</span>
+                            <span class="hero-metric-value">200K+</span>
+                            <span class="hero-metric-label">Trades<br>Auditados</span>
                         </div>
                         <div class="hero-metric-divider"></div>
                         <div class="hero-metric">
-                            <span class="hero-metric-value">6M</span>
-                            <span class="hero-metric-label">Parâmetros<br>na Rede</span>
+                            <span class="hero-metric-value">10</span>
+                            <span class="hero-metric-label">Horizontes<br>de Tempo</span>
                         </div>
                     </div>
 
-                    <!-- CTA -->
+                    <!-- CTA — QUANTO CUSTA visível aqui -->
                     <div class="hero-cta">
                         <a href="#pagar" class="btn-primary">
-                            Começar Agora
+                            Testar 3 dias grátis
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                         </a>
-                        <span class="hero-price">R$ 47/mês</span>
+                        <span class="hero-price">R$ 47/mês após</span>
                     </div>
-                    <p class="hero-guarantee">Primeiros 10 assinantes: preço vitalício garantido &nbsp;·&nbsp; 7 dias de reembolso</p>
+                    <p class="hero-guarantee">Sem cartão de crédito &nbsp;·&nbsp; 7 dias de reembolso garantido</p>
                 </div>
 
                 <!-- Dashboard Preview -->
@@ -284,16 +290,16 @@
                                 <span class="preview-value up">$65,482.00</span>
                             </div>
                             <div class="preview-row">
-                                <span>Previsão 15min</span>
-                                <span class="preview-value up">+2.34%</span>
+                                <span>Sinal 15min</span>
+                                <span class="preview-value up">↑ COMPRA</span>
                             </div>
                             <div class="preview-row">
-                                <span>Acurácia 15min</span>
-                                <span class="preview-value">61.9%</span>
+                                <span>Confiança</span>
+                                <span class="preview-value">73%</span>
                             </div>
                             <div class="preview-row">
-                                <span>Regime</span>
-                                <span class="preview-badge">trend_up</span>
+                                <span>Acurácia 30min</span>
+                                <span class="preview-value up">68.5%</span>
                             </div>
                             <div class="preview-chart">
                                 <div class="chart-bars">
@@ -316,11 +322,11 @@
             <div class="trust-items">
                 <div class="trust-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    <span>Acurácia verificada com preços reais</span>
+                    <span>Acurácia verificada com preços reais da Binance</span>
                 </div>
                 <div class="trust-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    <span>Dados da Binance (maior exchange do mundo)</span>
+                    <span>Sinais automáticos no Telegram VIP</span>
                 </div>
                 <div class="trust-item">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
@@ -330,47 +336,44 @@
         </div>
     </section>
 
-    <!-- ══ COMO FUNCIONA (NOVA SEÇÃO) ══════════════════════════════════════ -->
-    <section class="how-section" id="como-funciona">
+    <!-- ══ COMO FUNCIONA EM 3 PASSOS ══════════════════════════════════════ -->
+    <section class="steps-section" id="como-funciona">
         <div class="container">
-            <h2>O que é o Trader AI — e como funciona</h2>
-            <p class="section-sub">Em 4 passos, do sinal até a verificação pública.</p>
+            <h2>Como funciona</h2>
+            <p class="section-sub">3 passos. Do sinal até você operar.</p>
 
-            <div class="how-steps">
-                <div class="how-step">
-                    <div class="how-step-num">1</div>
-                    <h4>A IA lê o mercado em tempo real</h4>
-                    <p>A cada novo candle, nossa rede neural com 6 milhões de parâmetros processa preço, volume, volatilidade e indicadores técnicos de BTC, ETH, BNB, SOL e mais.</p>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-num">1</div>
+                    <h4>IA analisa o mercado</h4>
+                    <p>A cada candle, a IA processa preço, volume e volatilidade de BTC, ETH, BNB e SOL em tempo real.</p>
+                    <span class="step-arrow">›</span>
                 </div>
-                <div class="how-step">
-                    <div class="how-step-num">2</div>
-                    <h4>Gera uma previsão com timestamp</h4>
-                    <p>O modelo decide: o preço vai subir ou cair no próximo intervalo? Essa previsão é registrada imediatamente com data, hora e nível de confiança — antes do resultado acontecer.</p>
+                <div class="step-card">
+                    <div class="step-num">2</div>
+                    <h4>Sinal chega no Telegram</h4>
+                    <p>Quando a confiança está alta, você recebe: moeda, direção (compra/venda), horizonte e preço-alvo.</p>
+                    <span class="step-arrow">›</span>
                 </div>
-                <div class="how-step">
-                    <div class="how-step-num">3</div>
-                    <h4>Você recebe o sinal no Telegram</h4>
-                    <p>Quando a confiança está alta, o sinal chega no grupo VIP: moeda, direção (compra ou venda), horizonte temporal e preço-alvo estimado. 1–2 sinais por dia, sem spam.</p>
-                </div>
-                <div class="how-step">
-                    <div class="how-step-num">4</div>
-                    <h4>A acurácia é verificada publicamente</h4>
-                    <p>Quando o horizonte fecha, comparamos a previsão com o preço real da Binance e atualizamos os dados públicos. Nada é apagado. Você vê o histórico completo no painel de auditoria.</p>
+                <div class="step-card">
+                    <div class="step-num">3</div>
+                    <h4>Acurácia auditada</h4>
+                    <p>Toda previsão é comparada ao preço real da Binance. 200.000+ trades públicos. Nada é apagado.</p>
                 </div>
             </div>
 
-            <div style="margin-top:2rem; padding: 1.25rem 1.5rem; background: #0d1829; border: 1px solid #1e293b; border-radius: 12px; color: #64748b; font-size: .9rem; line-height: 1.7;">
-                <strong style="color:#e2e8f0;">⚠️ Transparência:</strong> o Trader AI prevê direção de preço — não garante lucro. Acurácia de 60–68 % significa que a IA acerta mais do que erra, mas perdas ainda são possíveis. Use sempre gestão de risco e opere apenas com o que pode perder.
+            <div style="margin-top:2rem; padding: 1.25rem 1.5rem; background: #0a1020; border: 1px solid #1a2540; border-radius: 12px; color: #64748b; font-size: .9rem; line-height: 1.7;">
+                <strong style="color:#e2e8f0;">⚠️ Transparência:</strong> o Trader AI prevê direção de preço — não garante lucro. Acurácia de 60–68% significa que a IA acerta mais do que erra, mas perdas ainda são possíveis. Opere sempre com gestão de risco.
             </div>
         </div>
     </section>
 
-    <!-- Melhores Acuracias ja Registradas -->
+    <!-- ══ RESULTADOS ══════════════════════════════════════════════════════ -->
     <section class="results" id="resultados">
         <div class="container">
-            <h2>Melhores Acurácias já Registradas</h2>
-            <p class="section-sub">Recordes históricos verificados. Dados reais da Binance.</p>
-            
+            <h2>Resultados Verificados</h2>
+            <p class="section-sub">Dados reais da Binance. Auditados publicamente.</p>
+
             <div class="results-table-wrapper">
                 <table class="results-table">
                     <thead>
@@ -422,75 +425,68 @@
                 </table>
             </div>
             <p class="results-note">
-                Acurácia atualizada em tempo real no 
-                <a href="dashboard.html" style="color:#06b6d4;">Painel de Auditoria Pública</a>
+                Acurácia ao vivo no
+                <a href="dashboard.html" style="color:#06b6d4;">Painel de Auditoria Pública →</a>
             </p>
         </div>
     </section>
 
-    <!-- Features -->
+    <!-- ══ FEATURES ════════════════════════════════════════════════════════ -->
     <section class="features">
         <div class="container">
-            <h2>Tudo que você precisa para operar</h2>
+            <h2>Tudo incluso no plano</h2>
             <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    </div>
+                    <h3>Sinais no Telegram VIP</h3>
+                    <p>Moeda, direção, horizonte e confiança. Enviados automaticamente quando a IA detecta uma oportunidade.</p>
+                </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
                     </div>
-                    <h3>Dashboard Profissional</h3>
-                    <p>Visualize previsões em tempo real, candles, indicadores técnicos e acurácia por horizonte em um painel completo.</p>
+                    <h3>Dashboard em tempo real</h3>
+                    <p>Previsões, candles, indicadores e acurácia por horizonte em um painel completo.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                     </div>
-                    <h3>10 Horizontes Temporais</h3>
-                    <p>Do scalping de 5 segundos ao position trade de 1 dia. A IA se adapta a cada horizonte com arquitetura específica.</p>
+                    <h3>10 horizontes de tempo</h3>
+                    <p>Do scalping de 5 minutos ao position trade de 1 dia. Você escolhe o seu estilo.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
                     </div>
-                    <h3>Gestão de Risco</h3>
-                    <p>Calculadora de posição, stop loss, take profit, simulador de cenários e limites de proteção integrados.</p>
+                    <h3>Gestão de risco integrada</h3>
+                    <p>Calculadora de posição, stop loss e take profit integrados direto no dashboard.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
                     </div>
-                    <h3>Histórico Completo</h3>
-                    <p>Cada trade registrado, verificado e exibido com acurácia real por moeda e horizonte. Exporte seus dados.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                    </div>
-                    <h3>Sinais no Grupo VIP</h3>
-<p>Sinais enviados em tempo real quando a IA detecta oportunidades. Com cooldown inteligente para evitar spam. Moeda, direção, horizonte, confiança e preço alvo.</p>
+                    <h3>Histórico completo</h3>
+                    <p>Todo trade registrado e verificado. Acesse o <a href="dashboard.html" style="color:#06b6d4;">painel de auditoria</a> com dados públicos.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     </div>
-                    <h3>Acurácia Verificada</h3>
-                    <p>Nada de backtest. Cada previsão é comparada com o preço real da Binance após o horizonte. Dados públicos.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    </div>
-                    <h3>Auditoria Pública</h3>
-                    <p>Todos os dados são públicos. Acesse nosso <a href="dashboard.html" style="color:#06b6d4;">painel de auditoria</a> e veja cada trade registrado.</p>
+                    <h3>Suporte via WhatsApp</h3>
+                    <p>Time disponível para tirar dúvidas e ativar seu acesso rapidamente.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Planos -->
+    <!-- ══ PLANOS ═══════════════════════════════════════════════════════════ -->
     <section class="pricing" id="planos">
         <div class="container">
-            <h2>Plano Único. Simples. Direto.</h2>
-            
+            <h2>Simples. R$ 47/mês.</h2>
+
             <div class="pricing-card" id="pagar">
                 <div class="pricing-badge">Mais Popular</div>
                 <h3>Plano Mensal</h3>
@@ -500,43 +496,42 @@
                     <span class="price-month">/mês</span>
                 </div>
                 <p class="pricing-desc">Acesso completo. Cancele quando quiser.</p>
-                <p class="pricing-lifetime">Primeiros 10: preço vitalício garantido</p>
-                
+                <p class="pricing-lifetime">Primeiros 10 assinantes: preço vitalício garantido</p>
+
                 <ul class="pricing-features">
+                    <li>Sinais automáticos no Telegram VIP</li>
                     <li>Dashboard completo em tempo real</li>
                     <li>10 horizontes de previsão</li>
-                    <li>Sinais diários no Telegram VIP</li>
                     <li>Gestão de risco integrada</li>
-                    <li>Histórico de trades verificados</li>
+                    <li>Histórico de 200.000+ trades verificados</li>
                     <li>Suporte direto via WhatsApp</li>
                 </ul>
 
-                <!-- Garantia de reembolso -->
                 <div class="guarantee-badge">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     <div>
-                        <strong>Garantia de 7 dias ou seu dinheiro de volta</strong>
-                        <p>Não gostou? Peça reembolso integral em até 7 dias corridos após o pagamento, sem perguntas. Basta mandar mensagem no WhatsApp.</p>
+                        <strong>7 dias ou seu dinheiro de volta</strong>
+                        <p>Não gostou? Reembolso integral em até 7 dias, sem perguntas. Basta mandar mensagem no WhatsApp.</p>
                     </div>
                 </div>
 
                 <div class="payment-section">
-                    <h4>Comece seu teste gratuito</h4>
-                    
-                    <a href="https://wa.me/14991840826?text=Olá!%20Quero%20testar%20o%20Trader%20AI%20por%203%20dias%20grátis!" 
-                    class="btn-trial" 
+                    <h4>Comece com 3 dias grátis</h4>
+
+                    <a href="https://wa.me/14991840826?text=Olá!%20Quero%20testar%20o%20Trader%20AI%20por%203%20dias%20grátis!"
+                    class="btn-trial"
                     target="_blank">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
                         </svg>
                         ATIVAR TESTE GRATUITO AGORA
                     </a>
-                    <p class="trial-note">3 dias grátis • Sem cartão de crédito • Cancele quando quiser</p>
-                    
+                    <p class="trial-note">3 dias grátis · Sem cartão de crédito · Cancele quando quiser</p>
+
                     <div class="payment-divider">
-                        <span>ou assine diretamente</span>
+                        <span>ou assine diretamente via PIX</span>
                     </div>
-                    
+
                     <h4>Pagamento via PIX</h4>
                     <div class="pix-box">
                         <div class="pix-row">
@@ -552,16 +547,16 @@
                             <span class="pix-value">R$ 47,00</span>
                         </div>
                     </div>
-                    
+
                     <a href="https://wa.me/14991840826" class="btn-whatsapp" target="_blank">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
                         Enviar comprovante no WhatsApp
                     </a>
 
                     <p style="margin-top:.75rem; font-size:.8rem; color:#475569; text-align:center;">
-                        Ao assinar, você concorda com os 
-                        <a onclick="openModal('modal-terms')" style="color:#64748b; text-decoration:underline; cursor:pointer;">Termos de Uso</a> 
-                        e a 
+                        Ao assinar, você concorda com os
+                        <a onclick="openModal('modal-terms')" style="color:#64748b; text-decoration:underline; cursor:pointer;">Termos de Uso</a>
+                        e a
                         <a onclick="openModal('modal-privacy')" style="color:#64748b; text-decoration:underline; cursor:pointer;">Política de Privacidade</a>.
                     </p>
                 </div>
@@ -569,46 +564,46 @@
         </div>
     </section>
 
-    <!-- FAQ -->
+    <!-- ══ FAQ ══════════════════════════════════════════════════════════════ -->
     <section class="faq" id="faq">
         <div class="container">
             <h2>Perguntas Frequentes</h2>
             <div class="faq-grid">
                 <div class="faq-card">
                     <h3>Como a acurácia é verificada?</h3>
-                    <p>Cada previsão é registrada com timestamp. Quando o horizonte passa, comparamos com o preço real da Binance. Os dados ficam públicos em JSON.</p>
+                    <p>Cada previsão recebe um timestamp. Quando o horizonte fecha, comparamos com o preço real da Binance. Os dados são públicos — você pode checar no <a href="dashboard.html" style="color:#06b6d4;">painel de auditoria</a>.</p>
                 </div>
                 <div class="faq-card">
                     <h3>Quantos sinais recebo por dia?</h3>
-<p>Durante o horário de operação, sinais são enviados aproximadamente a cada 15-30 minutos, apenas quando o modelo detecta assimetrias estatísticas com alta confiança. Fora do horário, o sistema entra em espera.</p>
+                    <p>Varia com o mercado. A IA só envia sinal quando a confiança está alta — evitando spam. Nos períodos de movimento, você recebe 3–6 sinais por dia.</p>
                 </div>
                 <div class="faq-card">
                     <h3>Posso cancelar a qualquer momento?</h3>
-                    <p>Sim. O plano é mensal e você pode cancelar quando quiser. Sem multa, sem burocracia.</p>
+                    <p>Sim. O plano é mensal. Cancele quando quiser, sem multa e sem burocracia. Basta avisar pelo WhatsApp.</p>
                 </div>
                 <div class="faq-card">
                     <h3>Isso garante lucro?</h3>
-                    <p>Não. Trading envolve riscos. Nossa IA fornece previsões com acurácia real verificada, mas resultados passados não garantem resultados futuros.</p>
+                    <p>Não. Trading tem risco. Nossa IA acerta mais do que erra — mas perdas são possíveis. Use sempre gestão de risco e opere apenas com o que pode perder.</p>
                 </div>
                 <div class="faq-card">
-                    <h3>Tem reembolso?</h3>
-                    <p>Sim. Garantimos devolução integral em até 7 dias corridos após o pagamento, sem precisar justificar. Basta entrar em contato pelo WhatsApp.</p>
+                    <h3>Como funciona o reembolso?</h3>
+                    <p>7 dias, sem perguntas. Peça pelo WhatsApp e devolvemos 100% do valor pago no mesmo dia.</p>
                 </div>
                 <div class="faq-card">
                     <h3>O que acontece com meus dados?</h3>
-                    <p>Usamos apenas seu nome e WhatsApp para ativar o acesso e prestar suporte. Não vendemos dados a terceiros. Veja nossa <a onclick="openModal('modal-privacy')" style="color:#06b6d4; cursor:pointer;">Política de Privacidade</a>.</p>
+                    <p>Usamos apenas nome e WhatsApp para ativar o acesso. Não vendemos dados. Veja a <a onclick="openModal('modal-privacy')" style="color:#06b6d4; cursor:pointer;">Política de Privacidade</a>.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- ══ FOOTER ════════════════════════════════════════════════════════════ -->
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
                     <span class="logo-text">TRADER AI</span>
-                    <p>IA Proprietária para Crypto Trading</p>
+                    <p>IA de Crypto Signals · Bauru, Brasil</p>
                 </div>
                 <div class="footer-links">
                     <a href="#como-funciona">Como funciona</a>
@@ -639,13 +634,11 @@
         document.getElementById(id).classList.remove('active');
         document.body.style.overflow = '';
     }
-    // Fechar clicando fora do box
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
         overlay.addEventListener('click', e => {
             if (e.target === overlay) closeModal(overlay.id);
         });
     });
-    // Fechar com Esc
     document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
             document.querySelectorAll('.modal-overlay.active').forEach(m => closeModal(m.id));
