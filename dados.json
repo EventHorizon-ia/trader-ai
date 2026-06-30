@@ -1,54 +1,29 @@
 {
-  "ultima_atualizacao": "27/06 20:11",
+  "ultima_atualizacao": "30/06 13:15",
   "performance": [
     {
       "symbol": "BTC",
-      "total_trades": 120304,
-      "acuracia_5s": 55.1,
-      "acuracia_15s": 53.7,
-      "acuracia_30s": 51.4,
-      "acuracia_60s": 51.5,
-      "acuracia_300s": 49.0,
-      "acuracia_900s": 44.0,
-      "acuracia_1800s": 44.6,
-      "acuracia_3600s": 58.5
+      "total_trades": 3083,
+      "acuracia_5s": 48.6,
+      "acuracia_15s": 52.7,
+      "acuracia_30s": 55.3,
+      "acuracia_60s": 52.0,
+      "acuracia_300s": 61.0,
+      "acuracia_900s": 70.6
     },
     {
       "symbol": "ETH",
-      "total_trades": 120194,
-      "acuracia_5s": 45.3,
-      "acuracia_15s": 46.6,
-      "acuracia_30s": 48.2,
-      "acuracia_60s": 49.6,
-      "acuracia_300s": 45.5,
-      "acuracia_900s": 44.7,
-      "acuracia_1800s": 56.9,
-      "acuracia_3600s": 32.9
-    },
-    {
-      "symbol": "BNB",
-      "total_trades": 20007,
-      "acuracia_5s": 49.9,
-      "acuracia_15s": 48.4,
-      "acuracia_30s": 49.5,
-      "acuracia_60s": 43.4,
-      "acuracia_300s": 55.4,
-      "acuracia_900s": 38.4,
-      "acuracia_1800s": 48.4,
-      "acuracia_3600s": 47.8
-    },
-    {
-      "symbol": "SOL",
-      "total_trades": 899,
-      "acuracia_5s": 48.0,
-      "acuracia_15s": 50.5,
-      "acuracia_30s": 53.4,
-      "acuracia_60s": 40.0,
-      "acuracia_300s": 56.1
+      "total_trades": 3035,
+      "acuracia_5s": 44.7,
+      "acuracia_15s": 57.5,
+      "acuracia_30s": 58.4,
+      "acuracia_60s": 53.9,
+      "acuracia_300s": 44.1,
+      "acuracia_900s": 64.7
     }
   ],
-  "total_trades": 261404,
-  "acuracia_geral": 49.0,
-  "profit_factor": 0.96,
-  "melhores_horizontes": 4
+  "total_trades": 6118,
+  "acuracia_geral": 54.1,
+  "profit_factor": 1.18,
+  "melhores_horizontes": 2
 }
