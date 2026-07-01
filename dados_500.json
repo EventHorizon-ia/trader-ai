@@ -2,26 +2,28 @@
   "performance": [
     {
       "symbol": "BTC",
-      "total_trades": 1868,
-      "acuracia_5s": 48.6,
-      "acuracia_15s": 55.2,
-      "acuracia_30s": 53.8,
-      "acuracia_60s": 52.0,
-      "acuracia_300s": 61.0,
-      "acuracia_900s": 70.6
+      "total_trades": 2260,
+      "acuracia_5s": 50.0,
+      "acuracia_15s": 43.8,
+      "acuracia_30s": 45.0,
+      "acuracia_60s": 45.4,
+      "acuracia_300s": 53.3,
+      "acuracia_900s": 49.1,
+      "acuracia_1800s": 38.1
     },
     {
       "symbol": "ETH",
-      "total_trades": 1829,
-      "acuracia_5s": 44.7,
-      "acuracia_15s": 56.4,
-      "acuracia_30s": 57.8,
-      "acuracia_60s": 53.9,
-      "acuracia_300s": 44.1,
-      "acuracia_900s": 64.7
+      "total_trades": 2260,
+      "acuracia_5s": 48.4,
+      "acuracia_15s": 46.0,
+      "acuracia_30s": 50.4,
+      "acuracia_60s": 45.8,
+      "acuracia_300s": 44.0,
+      "acuracia_900s": 43.6,
+      "acuracia_1800s": 52.4
     }
   ],
-  "total_trades": 6118,
-  "acuracia_geral": 54.1,
-  "profit_factor": 1.18
+  "total_trades": 19060,
+  "acuracia_geral": 50.6,
+  "profit_factor": 1.02
 }
