@@ -2,16 +2,18 @@
   "performance": [
     {
       "symbol": "BTC",
-      "total_trades": 1889,
-      "acuracia_5s": 49.4,
-      "acuracia_15s": 52.4,
-      "acuracia_30s": 53.4,
-      "acuracia_60s": 46.3,
-      "acuracia_300s": 55.9,
-      "acuracia_900s": 52.6
+      "total_trades": 2450,
+      "acuracia_5s": 46.6,
+      "acuracia_15s": 47.4,
+      "acuracia_30s": 48.2,
+      "acuracia_60s": 51.4,
+      "acuracia_300s": 45.6,
+      "acuracia_900s": 41.6,
+      "acuracia_1800s": 31.1,
+      "acuracia_3600s": 63.2
     }
   ],
-  "total_trades": 3125,
-  "acuracia_geral": 50.4,
-  "profit_factor": 1.02
+  "total_trades": 14488,
+  "acuracia_geral": 49.6,
+  "profit_factor": 0.98
 }
