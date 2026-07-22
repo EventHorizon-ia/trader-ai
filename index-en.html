@@ -1,664 +1,402 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light">
-    <title>EventHorizon AI — Crypto Signals with AI on Telegram</title>
-    <meta name="description" content="AI predicts crypto moves up or down. You receive the signal on Telegram. Verified accuracy across 6,000+ trades. $47/month. 3 free days.">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:,">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>EventHorizon-AI — Statistically Validated Forecasting Systems</title>
+<meta name="description" content="EventHorizon-AI builds and validates time-series forecasting systems — crypto direction, retail demand — with the same rigorous statistical pipeline before anything ships. Proof, not promises.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
 
-    <style>
-        /* ── Modal ── */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,.75);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-        .modal-overlay.active { display: flex; }
-        .modal-box {
-            background: #0f172a;
-            border: 1px solid #1e293b;
-            border-radius: 12px;
-            max-width: 680px;
-            width: 100%;
-            max-height: 80vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        .modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid #1e293b;
-        }
-        .modal-header h3 { margin: 0; font-size: 1.1rem; color: #f1f5f9; }
-        .modal-close {
-            background: none;
-            border: none;
-            color: #94a3b8;
-            cursor: pointer;
-            font-size: 1.5rem;
-            line-height: 1;
-            padding: 0;
-        }
-        .modal-close:hover { color: #f1f5f9; }
-        .modal-body {
-            padding: 1.5rem;
-            overflow-y: auto;
-            color: #94a3b8;
-            font-size: .93rem;
-            line-height: 1.7;
-        }
-        .modal-body h4 { color: #e2e8f0; margin-top: 1.5rem; margin-bottom: .4rem; font-size: 1rem; }
-        .modal-body h4:first-child { margin-top: 0; }
-        .modal-body p { margin: 0 0 .75rem; }
-        .modal-body ul { margin: 0 0 .75rem 1.25rem; }
+  /* ============ TOKENS ============ */
+  :root{
+    --bg:        #0a0a0a;
+    --surface:   #111214;
+    --surface-2: #16181c;
+    --border:    #24262b;
+    --border-hi: #33363c;
 
-        /* ── Guarantee badge ── */
-        .guarantee-badge {
-            display: flex;
-            align-items: flex-start;
-            gap: .85rem;
-            background: rgba(16,185,129,.08);
-            border: 1px solid rgba(16,185,129,.25);
-            border-radius: 10px;
-            padding: 1rem 1.1rem;
-            margin-top: 1rem;
-        }
-        .guarantee-badge svg { flex-shrink: 0; margin-top: 2px; }
-        .guarantee-badge strong { display: block; color: #10b981; font-size: .95rem; margin-bottom: .2rem; }
-        .guarantee-badge p { margin: 0; color: #94a3b8; font-size: .88rem; line-height: 1.5; }
+    --cyan:      #06b6d4;
+    --cyan-dim:  #0e7490;
+    --purple:    #7c3aed;
+    --amber:     #f59e0b;
+    --green:     #22c55e;
 
-        /* ── 3 Steps ── */
-        .steps-section { padding: 5rem 0; background: #060b14; }
-        .steps-section h2 { text-align: center; font-size: 2rem; margin-bottom: .5rem; color: #f1f5f9; }
-        .steps-section .section-sub { text-align: center; color: #64748b; margin-bottom: 3rem; }
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-        }
-        .step-card {
-            background: #0a1020;
-            border: 1px solid #1a2540;
-            border-radius: 12px;
-            padding: 2rem 1.5rem;
-            text-align: center;
-            position: relative;
-        }
-        .step-num {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-            background: rgba(6,182,212,.15);
-            color: #06b6d4;
-            font-weight: 800;
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-        }
-        .step-card h4 { color: #e2e8f0; font-size: 1.1rem; margin: 0 0 .5rem; }
-        .step-card p { color: #64748b; font-size: .9rem; margin: 0; line-height: 1.6; }
-        .step-arrow {
-            position: absolute;
-            right: -1.25rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #1e293b;
-            font-size: 1.5rem;
-            z-index: 1;
-        }
+    --text:      #e9e9ea;
+    --text-dim:  #96979c;
+    --text-faint:#5c5e64;
 
-        /* ── Legal footer ── */
-        .footer-legal {
-            margin-top: .75rem;
-            font-size: .8rem;
-            color: #475569;
-        }
-        .footer-legal a { color: #64748b; text-decoration: underline; cursor: pointer; }
-        .footer-legal a:hover { color: #94a3b8; }
+    --display: 'Space Grotesk', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', 'SFMono-Regular', Menlo, monospace;
+    --body: 'Inter', system-ui, sans-serif;
 
-        @media (max-width: 768px) {
-            .steps-grid { grid-template-columns: 1fr; }
-            .step-arrow { display: none; }
-        }
-    </style>
+    --radius: 10px;
+    --wrap: 1120px;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(124,58,237,.16), transparent 60%),
+      radial-gradient(ellipse 900px 600px at 90% 10%, rgba(6,182,212,.12), transparent 60%);
+    pointer-events:none;
+    z-index:0;
+  }
+  .wrap{ max-width:var(--wrap); margin:0 auto; padding:0 1.5rem; position:relative; z-index:1; }
+  a{ color:inherit; text-decoration:none; }
+  img,svg{ display:block; }
+  :focus-visible{ outline:2px solid var(--cyan); outline-offset:3px; }
+
+  h1,h2,h3,h4{ font-family:var(--display); letter-spacing:-0.02em; color:var(--text); }
+  .eyebrow{
+    font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--cyan); display:flex; align-items:center; gap:.5rem; margin-bottom:1rem;
+  }
+  .eyebrow::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--cyan); box-shadow:0 0 8px var(--cyan); }
+
+  section{ position:relative; z-index:1; padding:5.5rem 0; }
+  section h2{ font-size:clamp(1.7rem,3.4vw,2.3rem); }
+  .section-sub{ color:var(--text-dim); max-width:560px; margin-top:.6rem; font-size:1rem; }
+
+  /* pill / status chip in the shared visual language ("terminal" motif) */
+  .pass-chip{
+    display:inline-flex; align-items:center; gap:.4rem;
+    font-family:var(--mono); font-size:.78rem; color:var(--green);
+    background:rgba(34,197,94,.08); border:1px solid rgba(34,197,94,.25);
+    padding:.3rem .65rem; border-radius:6px;
+  }
+  .pass-chip::before{ content:"✓"; font-weight:700; }
+
+  /* ============ NAVBAR ============ */
+  .navbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,10,10,.85); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-content{ display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .logo{ display:flex; align-items:center; gap:.55rem; font-family:var(--mono); font-weight:600; font-size:.95rem; letter-spacing:.03em; }
+  .logo .dot{ width:8px; height:8px; border-radius:50%; background:var(--cyan); box-shadow:0 0 10px var(--cyan); }
+  .logo span.dim{ color:var(--text-dim); font-weight:400; }
+  .nav-links{ display:flex; align-items:center; gap:2rem; font-size:.9rem; color:var(--text-dim); }
+  .nav-links a:hover{ color:var(--text); }
+  .nav-cta{
+    font-family:var(--mono); font-size:.82rem; color:var(--bg) !important;
+    background:var(--cyan); padding:.5rem 1rem; border-radius:6px;
+    transition:filter .15s;
+  }
+  .nav-cta:hover{ filter:brightness(1.1); }
+
+  /* ============ HERO ============ */
+  .hero{ padding:6rem 0 5rem; }
+  .hero-grid{ display:grid; grid-template-columns:1.1fr 1fr; gap:3.5rem; align-items:center; }
+  .hero h1{ font-size:clamp(2.2rem,4.6vw,3.4rem); line-height:1.08; margin-bottom:1.25rem; }
+  .hero h1 em{ font-style:normal; background:linear-gradient(90deg,var(--cyan),var(--purple)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero-desc{ color:var(--text-dim); font-size:1.05rem; max-width:520px; margin-bottom:2rem; }
+  .hero-cta{ display:flex; gap:.9rem; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:.55rem;
+    font-family:var(--mono); font-size:.85rem; font-weight:500;
+    padding:.85rem 1.4rem; border-radius:7px; border:1px solid transparent;
+    transition:transform .15s, filter .15s, border-color .15s;
+  }
+  .btn:hover{ transform:translateY(-1px); }
+  .btn-primary{ background:var(--cyan); color:#04141a; }
+  .btn-primary:hover{ filter:brightness(1.1); }
+  .btn-outline{ border-color:var(--border-hi); color:var(--text); }
+  .btn-outline:hover{ border-color:var(--cyan); color:var(--cyan); }
+
+  /* terminal signature block */
+  .term{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    overflow:hidden; box-shadow:0 20px 60px -20px rgba(0,0,0,.6);
+  }
+  .term-bar{
+    display:flex; align-items:center; gap:.4rem;
+    padding:.7rem 1rem; border-bottom:1px solid var(--border); background:var(--surface-2);
+  }
+  .term-bar span{ width:9px; height:9px; border-radius:50%; background:var(--border-hi); }
+  .term-bar .label{ margin-left:.6rem; font-family:var(--mono); font-size:.72rem; color:var(--text-faint); }
+  .term-body{ padding:1.3rem 1.4rem; font-family:var(--mono); font-size:.82rem; line-height:1.95; }
+  .term-body .cmd{ color:var(--text-dim); }
+  .term-body .cmd::before{ content:"$ "; color:var(--cyan); }
+  .term-row{ display:flex; justify-content:space-between; gap:1rem; color:var(--text-dim); }
+  .term-row .ok{ color:var(--green); }
+  .term-row.result{ color:var(--text); margin-top:.35rem; padding-top:.6rem; border-top:1px dashed var(--border); }
+
+  /* ============ TRUST BAR ============ */
+  .trust-bar{ padding:1.4rem 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+  .trust-items{ display:flex; justify-content:center; gap:2.8rem; flex-wrap:wrap; font-family:var(--mono); font-size:.78rem; color:var(--text-faint); }
+  .trust-items span{ color:var(--text-dim); }
+
+  /* ============ PRODUCTS ============ */
+  .products-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1.6rem; margin-top:2.8rem; }
+  .product-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:2rem; display:flex; flex-direction:column; transition:border-color .15s;
+  }
+  .product-card:hover{ border-color:var(--border-hi); }
+  .product-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1.2rem; }
+  .product-name{ font-size:1.3rem; }
+  .product-tag{ font-family:var(--mono); font-size:.7rem; letter-spacing:.06em; text-transform:uppercase; color:var(--text-faint); margin-top:.3rem; }
+  .product-metric{ font-family:var(--display); font-size:2.5rem; font-weight:700; margin:.4rem 0 .2rem; }
+  .product-metric.cyan{ color:var(--cyan); }
+  .product-metric.purple{ color:var(--purple); }
+  .product-metric-label{ font-size:.85rem; color:var(--text-dim); margin-bottom:1.1rem; }
+  .product-honest{
+    display:flex; gap:.6rem; align-items:flex-start;
+    background:rgba(245,158,11,.06); border:1px solid rgba(245,158,11,.22);
+    border-radius:8px; padding:.85rem 1rem; margin:1.1rem 0 1.4rem; font-size:.85rem; color:var(--text-dim);
+  }
+  .product-honest strong{ color:var(--amber); }
+  .product-card .btn{ margin-top:auto; align-self:flex-start; }
+
+  /* ============ VALIDATION PIPELINE ============ */
+  .pipeline{ border-top:1px solid var(--border); }
+  .pipeline-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1.1rem; margin-top:2.8rem; position:relative; }
+  .pipeline-step{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:1.6rem 1.4rem; position:relative;
+  }
+  .pipeline-step .step-index{ font-family:var(--mono); font-size:.72rem; color:var(--purple); margin-bottom:.8rem; display:block; }
+  .pipeline-step h4{ font-size:1rem; margin-bottom:.5rem; }
+  .pipeline-step p{ font-size:.85rem; color:var(--text-dim); }
+  .pipeline-connector{
+    position:absolute; top:2.6rem; right:-1.1rem; width:1.1rem; height:1px;
+    background:var(--border-hi); z-index:2;
+  }
+  .pipeline-lib{
+    margin-top:2.2rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;
+    background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius);
+    padding:1.2rem 1.5rem;
+  }
+  .pipeline-lib code{ font-family:var(--mono); font-size:.85rem; color:var(--cyan); }
+  .pipeline-lib p{ font-size:.85rem; color:var(--text-dim); }
+
+  /* ============ CTA ============ */
+  .cta-section{ border-top:1px solid var(--border); text-align:center; }
+  .cta-section h2{ font-size:clamp(1.6rem,3.2vw,2.2rem); }
+  .cta-section p{ color:var(--text-dim); max-width:480px; margin:.8rem auto 2rem; }
+
+  /* ============ FOOTER ============ */
+  footer{ border-top:1px solid var(--border); padding:3rem 0 2.2rem; }
+  .footer-grid{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:2rem; }
+  .footer-brand p{ color:var(--text-faint); font-size:.85rem; margin-top:.4rem; }
+  .footer-links{ display:flex; gap:1.8rem; flex-wrap:wrap; font-size:.88rem; color:var(--text-dim); }
+  .footer-links a:hover{ color:var(--cyan); }
+  .footer-bottom{ margin-top:2.4rem; padding-top:1.6rem; border-top:1px solid var(--border); font-size:.8rem; color:var(--text-faint); display:flex; justify-content:space-between; flex-wrap:wrap; gap:.6rem; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width:860px){
+    .hero-grid{ grid-template-columns:1fr; gap:2.5rem; }
+    .products-grid{ grid-template-columns:1fr; }
+    .pipeline-grid{ grid-template-columns:1fr 1fr; }
+    .pipeline-connector{ display:none; }
+    .nav-links{ gap:1.1rem; font-size:.82rem; }
+    .nav-links a:not(.nav-cta){ display:none; }
+  }
+  @media (max-width:520px){
+    section{ padding:3.6rem 0; }
+    .pipeline-grid{ grid-template-columns:1fr; }
+    .trust-items{ flex-direction:column; align-items:center; gap:.7rem; }
+    .footer-bottom{ flex-direction:column; }
+  }
+</style>
 </head>
 <body>
 
-<!-- ══ MODALS ══════════════════════════════════════════════════════════════ -->
-
-<div class="modal-overlay" id="modal-terms">
-    <div class="modal-box">
-        <div class="modal-header">
-            <h3>Terms of Use</h3>
-            <button class="modal-close" onclick="closeModal('modal-terms')">&times;</button>
-        </div>
-        <div class="modal-body">
-            <p>Last updated: June 2026.</p>
-            <h4>1. Acceptance</h4>
-            <p>By subscribing to or using EventHorizon AI, you fully agree to these Terms. If you do not agree, do not use the service.</p>
-            <h4>2. Nature of the service</h4>
-            <p>EventHorizon AI is an AI-based forecasting system that analyzes historical cryptocurrency data and issues price-direction estimates. <strong>It is not a financial advisory, investment management, or brokerage service.</strong> No prediction constitutes a buy or sell recommendation.</p>
-            <h4>3. Risks</h4>
-            <p>Cryptocurrency markets are volatile and unpredictable. Past results do not guarantee future results. The user is solely responsible for their trading decisions and any financial losses.</p>
-            <h4>4. Accuracy</h4>
-            <p>The published accuracy metrics refer to binary predictions (up or down) verified against real Binance prices. Accuracy above 50% indicates predictive ability, but does not eliminate the risk of loss.</p>
-            <h4>5. Subscription and payment</h4>
-            <ul>
-                <li>The monthly plan is charged via PIX for R$ 47.00 per 30-day cycle.</li>
-                <li>Access is activated after manual payment confirmation via WhatsApp.</li>
-                <li>Cancellation can be requested at any time without penalty.</li>
-            </ul>
-            <h4>6. Refund guarantee</h4>
-            <p>We offer a full refund within 7 calendar days after payment, without justification. Requests must be made via WhatsApp or email.</p>
-            <h4>7. Intellectual property</h4>
-            <p>All code, models, data, and content of EventHorizon AI are the exclusive property of its developers. Reproduction, resale, or reverse engineering is prohibited without prior written authorization.</p>
-            <h4>8. Limitation of liability</h4>
-            <p>EventHorizon AI is not responsible for direct, indirect, or consequential losses arising from the use of predictions. Maximum liability is limited to the amount paid in the last 30 days.</p>
-            <h4>9. Modifications</h4>
-            <p>These terms may be updated at any time. Continued use of the service after publication of changes constitutes acceptance of the changes.</p>
-            <h4>10. Jurisdiction</h4>
-            <p>The Courts of Bauru/SP are elected to resolve any disputes.</p>
-        </div>
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar">
+  <div class="wrap nav-content">
+    <a href="#" class="logo"><span class="dot"></span>EVENTHORIZON<span class="dim">-AI</span></a>
+    <div class="nav-links">
+      <a href="#products">Products</a>
+      <a href="#validation">Validation</a>
+      <a href="#contact">Contact</a>
+      <a href="https://github.com/EventHorizon-ia/EventHorizon" target="_blank" rel="noopener">GitHub</a>
+      <a href="#contact" class="nav-cta">Apply for pilot</a>
     </div>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Temporal AI Research &amp; Products</div>
+      <h1>Proof, not <em>promises.</em></h1>
+      <p class="hero-desc">
+        EventHorizon-AI builds forecasting systems for crypto markets and retail demand, and puts every one of them through the same statistical validation pipeline before it ships. No cherry-picked backtests — walk-forward, bootstrap, and permutation testing, published openly.
+      </p>
+      <div class="hero-cta">
+        <a href="#products" class="btn btn-primary">View products →</a>
+        <a href="https://github.com/EventHorizon-ia/EventHorizon" target="_blank" rel="noopener" class="btn btn-outline">GitHub</a>
+      </div>
+    </div>
+
+    <div class="term">
+      <div class="term-bar">
+        <span></span><span></span><span></span>
+        <span class="label">validation.log</span>
+      </div>
+      <div class="term-body">
+        <div class="cmd">eventhorizon validate --model crypto-btc-5s</div>
+        <div class="term-row"><span>walk-forward &nbsp;(temporal embargo)</span><span class="ok">PASS</span></div>
+        <div class="term-row"><span>block bootstrap &nbsp;(per-date)</span><span class="ok">PASS</span></div>
+        <div class="term-row"><span>paired gap bootstrap &nbsp;(vs. baseline)</span><span class="ok">PASS</span></div>
+        <div class="term-row"><span>permutation test</span><span class="ok">PASS</span></div>
+        <div class="term-row result"><span>edge</span><span>+8.0pp &nbsp;(60.1% vs 52.0%)</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="trust-bar">
+  <div class="wrap trust-items">
+    <div>4-stage <span>statistical validation</span> on every product</div>
+    <div>Validation library <span>open-sourced</span></div>
+    <div>Limitations <span>documented, not buried</span></div>
+  </div>
 </div>
 
-<div class="modal-overlay" id="modal-privacy">
-    <div class="modal-box">
-        <div class="modal-header">
-            <h3>Privacy Policy</h3>
-            <button class="modal-close" onclick="closeModal('modal-privacy')">&times;</button>
+<!-- ══ PRODUCTS ══ -->
+<section id="products">
+  <div class="wrap">
+    <div class="eyebrow">Products</div>
+    <h2>Two systems. One pipeline.</h2>
+    <p class="section-sub">Each product below is validated with the same methodology described further down this page — not a separate marketing claim per product.</p>
+
+    <div class="products-grid">
+
+      <!-- Crypto -->
+      <div class="product-card">
+        <div class="product-top">
+          <div>
+            <div class="product-name">EventHorizon Crypto</div>
+            <div class="product-tag">BTC/USDT · 5-second horizon</div>
+          </div>
+          <span class="pass-chip">Validated</span>
         </div>
-        <div class="modal-body">
-            <p>Last updated: June 2026.</p>
-            <h4>1. Data collected</h4>
-            <p>We collect only the data strictly necessary to provide the service:</p>
-            <ul>
-                <li>Name and WhatsApp number (to activate and support the subscription).</li>
-                <li>Payment receipt sent voluntarily.</li>
-                <li>Dashboard usage data (anonymous logs to improve the system).</li>
-            </ul>
-            <h4>2. Use of data</h4>
-            <p>The data is used exclusively to activate access, send signals in the VIP group, provide support, and improve the AI model. We do not sell, rent, or share personal data with third parties.</p>
-            <h4>3. Storage</h4>
-            <p>The data is stored on servers with encryption. Receipts sent via WhatsApp are deleted after payment confirmation.</p>
-            <h4>4. Your rights (LGPD)</h4>
-            <p>Under Law 13.709/2018, you may request at any time: access, correction, portability, or deletion of your data. Just contact us via WhatsApp.</p>
-            <h4>5. Cookies</h4>
-            <p>The site uses only essential technical cookies for operation. We do not use tracking or advertising cookies.</p>
-            <h4>6. Contact</h4>
-            <p>Privacy questions: <a href="https://wa.me/14991840826" target="_blank">WhatsApp (14) 99184-0826</a>.</p>
+        <div class="product-metric cyan">+8pp</div>
+        <div class="product-metric-label">edge over baseline — 60% vs 52% directional accuracy</div>
+        <div class="product-honest">
+          <span>⚠️</span>
+          <span><strong>Honest limitation:</strong> economically unviable under standard exchange fees at this horizon. Documented openly — see the audit dashboard for the full breakdown.</span>
         </div>
+        <a href="dashboard-en.html" class="btn btn-outline">View audit dashboard →</a>
+      </div>
+
+      <!-- Demand -->
+      <div class="product-card">
+        <div class="product-top">
+          <div>
+            <div class="product-name">EventHorizon Demand</div>
+            <div class="product-tag">Retail demand · M5 (Walmart) dataset</div>
+          </div>
+          <span class="pass-chip">Validated</span>
+        </div>
+        <div class="product-metric purple">30%</div>
+        <div class="product-metric-label">WAPE improvement — 30.9% vs 44.4% seasonal baseline</div>
+        <div class="product-honest">
+          <span>ℹ️</span>
+          <span><strong>Status:</strong> statistically significant in 7 of 7 stores tested (per-date bootstrap, paired gap vs. baseline). Currently accepting pilot partners.</span>
+        </div>
+        <a href="#contact" class="btn btn-outline">Apply for pilot →</a>
+      </div>
+
     </div>
-</div>
+  </div>
+</section>
 
-<!-- ══ PAGE ══════════════════════════════════════════════════════════════ -->
+<!-- ══ VALIDATION PIPELINE ══ -->
+<section class="pipeline" id="validation">
+  <div class="wrap">
+    <div class="eyebrow">Methodology</div>
+    <h2>The validation pipeline</h2>
+    <p class="section-sub">Every product above runs through these four checks, in this order, before a single number is published.</p>
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="container nav-content">
-            <a href="#" class="logo">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                <span>EVENTHORIZON AI</span>
-            </a>
-            <div class="nav-links">
-                <a href="#how-it-works">How it works</a>
-                <a href="#results">Results</a>
-                <a href="#plans">Plans</a>
-                <a href="#faq">FAQ</a>
-                <a href="#pay" class="nav-cta">Try for free</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- ══ HERO — optimized for 10 seconds ══════════════════════════════ -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-grid">
-                <div class="hero-text">
-
-                    <div class="hero-badge">
-                        <span class="pulse"></span>
-                        6,000 + trades publicly audited
-                    </div>
-
-                    <h1>
-                        AI that predicts crypto.<br>
-                        The signal arrives on
-                        <span class="gradient-text">Telegram.</span>
-                    </h1>
-
-                    <p class="hero-desc">
-                        The AI analyzes BTC, ETH, BNB, and SOL in real time. When it detects an opportunity, you receive: asset, direction (buy or sell), and time horizon. Verified accuracy — not a backtest.
-                    </p>
-
-                    <div class="hero-metrics">
-                        <div class="hero-metric">
-                            <span class="hero-metric-value">68.5<span class="unit">%</span></span>
-                            <span class="hero-metric-label">BTC accuracy<br>30 minutes</span>
-                        </div>
-                        <div class="hero-metric-divider"></div>
-                        <div class="hero-metric">
-                            <span class="hero-metric-value">6K+</span>
-                            <span class="hero-metric-label">Trades<br>Audited</span>
-                        </div>
-                        <div class="hero-metric-divider"></div>
-                        <div class="hero-metric">
-                            <span class="hero-metric-value">10</span>
-                            <span class="hero-metric-label">Time<br>Horizons</span>
-                        </div>
-                    </div>
-
-                    <div class="hero-cta">
-                        <a href="#pay" class="btn-primary">
-                            Try 3 days free
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                        </a>
-                        <span class="hero-price">$47/month after</span>
-                    </div>
-                    <p class="hero-guarantee">No credit card &nbsp;·&nbsp; 7-day money-back guarantee</p>
-                </div>
-
-                <div class="hero-preview">
-                    <div class="preview-card">
-                        <div class="preview-header">
-                            <div class="preview-dots">
-                                <span></span><span></span><span></span>
-                            </div>
-                            <span class="preview-title">Dashboard — BTCUSDT</span>
-                        </div>
-                        <div class="preview-body">
-                            <div class="preview-row">
-                                <span>Current Price</span>
-                                <span class="preview-value up">$65,482.00</span>
-                            </div>
-                            <div class="preview-row">
-                                <span>15min Signal</span>
-                                <span class="preview-value up">↑ BUY</span>
-                            </div>
-                            <div class="preview-row">
-                                <span>Confidence</span>
-                                <span class="preview-value">73%</span>
-                            </div>
-                            <div class="preview-row">
-                                <span>30min Accuracy</span>
-                                <span class="preview-value up">68.5%</span>
-                            </div>
-                            <div class="preview-chart">
-                                <div class="chart-bars">
-                                    <span style="height:60%"></span><span style="height:80%"></span>
-                                    <span style="height:45%"></span><span style="height:90%"></span>
-                                    <span style="height:70%"></span><span style="height:55%"></span>
-                                    <span style="height:85%"></span><span style="height:95%"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Trust Bar -->
-    <section class="trust-bar">
-        <div class="container">
-            <div class="trust-items">
-                <div class="trust-item">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    <span>Accuracy verified with real Binance prices</span>
-                </div>
-                <div class="trust-item">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    <span>Automatic signals in the VIP Telegram channel</span>
-                </div>
-                <div class="trust-item">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    <span>7-day money-back guarantee</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ══ HOW IT WORKS IN 3 STEPS ══════════════════════════════════════ -->
-    <section class="steps-section" id="how-it-works">
-        <div class="container">
-            <h2>How it works</h2>
-            <p class="section-sub">3 steps, from the signal to your trade.</p>
-
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-num">1</div>
-                    <h4>The AI analyzes the market</h4>
-                    <p>On every candle, the AI processes price, volume, and volatility for BTC, ETH, BNB, and SOL in real time.</p>
-                    <span class="step-arrow">›</span>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">2</div>
-                    <h4>The signal arrives on Telegram</h4>
-                    <p>When confidence is high, you receive: asset, direction (buy/sell), horizon, and target price.</p>
-                    <span class="step-arrow">›</span>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">3</div>
-                    <h4>Audited accuracy</h4>
-                    <p>Every prediction is compared with the real Binance price. 6,000 + public trades. Nothing is hidden.</p>
-                </div>
-            </div>
-
-            <div style="margin-top:2rem; padding: 1.25rem 1.5rem; background: #0a1020; border: 1px solid #1a2540; border-radius: 12px; color: #64748b; font-size: .9rem; line-height: 1.7;">
-                <strong style="color:#e2e8f0;">⚠️ Transparency:</strong> EventHorizon AI predicts price direction — it does not guarantee profit. Accuracy of 60–68% means the AI is right more often than wrong, but losses are still possible. Always trade with risk management.
-            </div>
-        </div>
-    </section>
-
-    <!-- ══ VERIFIED RESULTS ══════════════════════════════════════════════════════ -->
-    <section class="results" id="results">
-        <div class="container">
-            <h2>Verified Results</h2>
-            <p class="section-sub">Real Binance data. Publicly audited.</p>
-
-            <div class="results-table-wrapper">
-                <table class="results-table">
-                    <thead>
-                        <tr>
-                            <th>Asset</th>
-                            <th>Horizon</th>
-                            <th>Accuracy</th>
-                            <th>Trades</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="highlight-row">
-                            <td><strong>BTC</strong></td>
-                            <td>30min</td>
-                            <td class="up">68.5%</td>
-                            <td>1,577</td>
-                            <td>06/19/2026</td>
-                        </tr>
-                        <tr>
-                            <td><strong>ETH</strong></td>
-                            <td>5min</td>
-                            <td class="up">66.9%</td>
-                            <td>887</td>
-                            <td>06/08/2026</td>
-                        </tr>
-                        <tr>
-                            <td><strong>BNB</strong></td>
-                            <td>30min</td>
-                            <td class="up">64.6%</td>
-                            <td>1,577</td>
-                            <td>06/19/2026</td>
-                        </tr>
-                        <tr>
-                            <td><strong>SOL</strong></td>
-                            <td>5min</td>
-                            <td class="up">56.1%</td>
-                            <td>123</td>
-                            <td>06/22/2026</td>
-                        </tr>
-                        <tr>
-                            <td><strong>BTC</strong></td>
-                            <td>15min</td>
-                            <td class="up">56.3%</td>
-                            <td>13,366</td>
-                            <td>06/08/2026</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <p class="results-note">
-                Live accuracy in the
-                <a href="dashboard.html" style="color:#06b6d4;">Public Audit Dashboard →</a>
-            </p>
-        </div>
-    </section>
-
-    <!-- ══ FEATURES ════════════════════════════════════════════════════════ -->
-    <section class="features">
-        <div class="container">
-            <h2>Everything included in the plan</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                    </div>
-                    <h3>Signals in the VIP Telegram</h3>
-                    <p>Asset, direction, horizon, and confidence. Sent automatically when the AI detects an opportunity.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
-                    </div>
-                    <h3>Real-time dashboard</h3>
-                    <p>Predictions, candles, indicators, and accuracy by horizon in a complete panel.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                    </div>
-                    <h3>10 time horizons</h3>
-                    <p>From 5-minute scalping to 1-day position trading. You choose your style.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
-                    </div>
-                    <h3>Integrated risk management</h3>
-                    <p>Position calculator, stop loss, and take profit integrated directly into the dashboard.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-                    </div>
-                    <h3>Complete history</h3>
-                    <p>Every trade is recorded and verified. Access the <a href="dashboard.html" style="color:#06b6d4;">audit panel</a> with public data.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    </div>
-                    <h3>Support via WhatsApp</h3>
-                    <p>A team available to answer questions and activate your access quickly.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ══ PLANS ═══════════════════════════════════════════════════════════ -->
-    <section class="pricing" id="plans">
-        <div class="container">
-            <h2>Simple. $47/month.</h2>
-
-            <div class="pricing-card" id="pay">
-                <div class="pricing-badge">Most Popular</div>
-                <h3>Monthly Plan</h3>
-                <div class="pricing-price">
-                    <span class="price-symbol">$</span>
-                    <span class="price-amount">47</span>
-                    <span class="price-month">/month</span>
-                </div>
-                <p class="pricing-desc">Full access. Cancel anytime.</p>
-                <p class="pricing-lifetime">First 10 subscribers: lifetime price guaranteed</p>
-
-                <ul class="pricing-features">
-                    <li>Automatic signals in the VIP Telegram</li>
-                    <li>Complete real-time dashboard</li>
-                    <li>10 prediction horizons</li>
-                    <li>Integrated risk management</li>
-                    <li>History of 6,000+ verified trades</li>
-                    <li>Direct support via WhatsApp</li>
-                </ul>
-
-                <div class="guarantee-badge">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    <div>
-                        <strong>7 days or your money back</strong>
-                        <p>Didn’t like it? Full refund within 7 days, no questions asked. Just send a message on WhatsApp.</p>
-                    </div>
-                </div>
-
-                <div class="payment-section">
-                    <h4>Start with 3 free days</h4>
-
-                    <a href="https://wa.me/14991840826?text=Hello!%20I%20want%20to%20try%20Trader%20AI%20for%203%20free%20days!"
-                    class="btn-trial"
-                    target="_blank">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                        </svg>
-                        ACTIVATE FREE TRIAL NOW
-                    </a>
-                    <p class="trial-note">3 free days · No credit card · Cancel anytime</p>
-
-                    <div class="payment-divider">
-                        <span>or subscribe directly via PIX</span>
-                    </div>
-
-                    <h4>Payment via Crypto (Global)</h4>
-<div class="pix-box">
-    <div class="pix-row">
-        <span class="pix-label">Currency</span>
-        <span class="pix-value">USDT (BEP-20)</span>
+    <div class="pipeline-grid">
+      <div class="pipeline-step">
+        <span class="step-index">01 / walk-forward</span>
+        <h4>Temporal embargo</h4>
+        <p>The model never sees data from around the prediction boundary — no leakage from the future into training.</p>
+        <span class="pipeline-connector"></span>
+      </div>
+      <div class="pipeline-step">
+        <span class="step-index">02 / block bootstrap</span>
+        <h4>Per-date resampling</h4>
+        <p>Confidence intervals are built by resampling contiguous date blocks, respecting the autocorrelation in time series.</p>
+        <span class="pipeline-connector"></span>
+      </div>
+      <div class="pipeline-step">
+        <span class="step-index">03 / paired gap bootstrap</span>
+        <h4>Model vs. baseline</h4>
+        <p>The gap between model and baseline is bootstrapped directly, in pairs, instead of comparing two separate confidence intervals.</p>
+        <span class="pipeline-connector"></span>
+      </div>
+      <div class="pipeline-step">
+        <span class="step-index">04 / permutation test</span>
+        <h4>Null-hypothesis check</h4>
+        <p>Labels are shuffled and the model is re-scored, to confirm the observed edge isn't a product of chance.</p>
+      </div>
     </div>
-    <div class="pix-row">
-        <span class="pix-label">Address</span>
-        <span class="pix-value" style="font-size:11px;word-break:break-all;">0x0EEb83898127340F17502f47aa341EF1e1c3689c</span>
+
+    <div class="pipeline-lib">
+      <p>The full methodology is packaged as an installable Python library: <code>honest-validation-toolkit</code></p>
+      <a href="https://github.com/EventHorizon-ia/honest-validation-toolkit" target="_blank" rel="noopener" class="btn btn-outline">View on GitHub →</a>
     </div>
-    <div class="pix-row">
-        <span class="pix-label">Amount</span>
-        <span class="pix-value">$8 USDT</span>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="cta-section" id="contact">
+  <div class="wrap">
+    <div class="eyebrow" style="justify-content:center;">Get in touch</div>
+    <h2>Interested in a pilot?</h2>
+    <p>If you run a small or medium retail business and want to try EventHorizon Demand for free, send an email to <strong style="color:#06b6d4;">lucasthd08@gmail.com</strong> with the subject "Pilot Demand" and attach a CSV of your daily sales. I'll send you a forecast within 24 hours — no cost, no commitment.</p>
+    <a href="mailto:lucasthd08@gmail.com?subject=Pilot%20Demand" class="btn btn-primary">Send email →</a>
+    <p style="margin-top:1rem; color:var(--text-dim); font-size:.9rem;">or message directly:</p>
+    <a href="https://wa.me/14991840826?text=Olá!%20Tenho%20interesse%20no%20piloto%20de%20demanda." class="btn btn-primary" style="background:var(--green);" target="_blank">Send message via WhatsApp →</a>
+    <p style="margin-top:1.5rem; color:var(--text-faint); font-size:.85rem;">Prefer GitHub? <a href="https://github.com/EventHorizon-ia" style="color:var(--cyan);">Reach out there</a> — issues, discussions, or a direct message all work.</p>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><span class="dot"></span>EVENTHORIZON<span class="dim">-AI</span></div>
+        <p>Temporal AI research &amp; forecasting systems.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/EventHorizon-ia/EventHorizon" target="_blank" rel="noopener">GitHub Hub</a>
+        <a href="https://github.com/EventHorizon-ia/eventhorizon-crypto" target="_blank" rel="noopener">Crypto (prod)</a>
+        <a href="https://github.com/EventHorizon-ia/eventhorizon-demand" target="_blank" rel="noopener">Demand (prod)</a>
+        <a href="https://github.com/EventHorizon-ia/honest-validation-toolkit" target="_blank" rel="noopener">Validation Toolkit</a>
+        <a href="https://www.tabnews.com.br/" target="_blank" rel="noopener">TabNews</a>
+        <a href="#contact">Contact</a>
+      </div>
     </div>
-</div>
-
-<div class="payment-divider">
-    <span>or pay with PIX (Brazil)</span>
-</div>
-
-<h4>PIX Payment</h4>
-<div class="pix-box">
-    <div class="pix-row">
-        <span class="pix-label">Key</span>
-        <span class="pix-value">33485443867</span>
+    <div class="footer-bottom">
+      <span>Forecasts are statistical estimates, not investment advice. Past validation performance does not guarantee future results.</span>
+      <span>&copy; 2026 EventHorizon-AI</span>
     </div>
-    <div class="pix-row">
-        <span class="pix-label">Name</span>
-        <span class="pix-value">Silmara</span>
-    </div>
-    <div class="pix-row">
-        <span class="pix-label">Amount</span>
-        <span class="pix-value">R$ 47.00</span>
-    </div>
-</div>
+  </div>
+</footer>
 
-<a href="https://wa.me/14991840826" class="btn-whatsapp" target="_blank">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
-    Send payment proof on WhatsApp
-</a>
-
-                    <p style="margin-top:.75rem; font-size:.8rem; color:#475569; text-align:center;">
-                        By subscribing, you agree to the
-                        <a onclick="openModal('modal-terms')" style="color:#64748b; text-decoration:underline; cursor:pointer;">Terms of Use</a>
-                        and the
-                        <a onclick="openModal('modal-privacy')" style="color:#64748b; text-decoration:underline; cursor:pointer;">Privacy Policy</a>.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ══ FAQ ══════════════════════════════════════════════════════════════ -->
-    <section class="faq" id="faq">
-        <div class="container">
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-grid">
-                <div class="faq-card">
-                    <h3>How is accuracy verified?</h3>
-                    <p>Each prediction receives a timestamp. When the horizon closes, we compare it with the real Binance price. The data is public — you can check it in the <a href="dashboard.html" style="color:#06b6d4;">audit panel</a>.</p>
-                </div>
-                <div class="faq-card">
-                    <h3>How many signals do I receive per day?</h3>
-                    <p>It varies with the market. The AI only sends a signal when confidence is high — avoiding spam. During active periods, you receive 3–6 signals per day.</p>
-                </div>
-                <div class="faq-card">
-                    <h3>Can I cancel at any time?</h3>
-                    <p>Yes. The plan is monthly. Cancel whenever you want, without penalty or bureaucracy. Just let us know on WhatsApp.</p>
-                </div>
-                <div class="faq-card">
-                    <h3>Does this guarantee profit?</h3>
-                    <p>No. Trading involves risk. Our AI is right more often than wrong — but losses are still possible. Always use risk management and trade only what you can afford to lose.</p>
-                </div>
-                <div class="faq-card">
-                    <h3>How does the refund work?</h3>
-                    <p>7 days, no questions asked. Request it on WhatsApp and we return 100% of the amount paid the same day.</p>
-                </div>
-                <div class="faq-card">
-                    <h3>What happens to my data?</h3>
-                    <p>We use only your name and WhatsApp number to activate access. We do not sell data. See the <a onclick="openModal('modal-privacy')" style="color:#06b6d4; cursor:pointer;">Privacy Policy</a>.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ══ FOOTER ════════════════════════════════════════════════════════════ -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <span class="logo-text">EVENTHORIZON AI</span>
-                    <p>AI Crypto Signals · Bauru, Brazil</p>
-                </div>
-                <div class="footer-links">
-                    <a href="#how-it-works">How it works</a>
-                    <a href="#results">Results</a>
-                    <a href="#plans">Plans</a>
-                    <a href="#faq">FAQ</a>
-                    <a href="https://wa.me/14991840826">Contact</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>Past results do not guarantee future results. Cryptocurrency trading involves significant risks.</p>
-                <p class="footer-copy">Made in Bauru, Brazil &copy; 2026</p>
-                <p class="footer-legal">
-                    <a onclick="openModal('modal-terms')">Terms of Use</a>
-                    &nbsp;·&nbsp;
-                    <a onclick="openModal('modal-privacy')">Privacy Policy</a>
-                </p>
-            </div>
-        </div>
-    </footer>
-
-<script>
-    function openModal(id) {
-        document.getElementById(id).classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-    function closeModal(id) {
-        document.getElementById(id).classList.remove('active');
-        document.body.style.overflow = '';
-    }
-    document.querySelectorAll('.modal-overlay').forEach(overlay => {
-        overlay.addEventListener('click', e => {
-            if (e.target === overlay) closeModal(overlay.id);
-        });
-    });
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') {
-            document.querySelectorAll('.modal-overlay.active').forEach(m => closeModal(m.id));
-        }
-    });
-</script>
 </body>
 </html>
