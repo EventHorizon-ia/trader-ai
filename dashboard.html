@@ -1,508 +1,475 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light">
-    <title>EventHorizon AI — Auditoria Pública</title>
-    <link rel="icon" href="data:,">
-    <style>
-        :root {
-            --bg: #060b14;
-            --bg-card: #0a1020;
-            --border: #1a2540;
-            --cyan: #06b6d4;
-            --blue: #3b82f6;
-            --green: #10b981;
-            --red: #ef4444;
-            --text: #e2e8f0;
-            --text-dim: #94a3b8;
-            --text-muted: #64748b;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>Painel de Auditoria — EventHorizon Crypto</title>
+<meta name="description" content="Relatório estático de auditoria dos resultados de treinamento e validação do EventHorizon Crypto (BTC/USDT) — acurácia por horizonte, pipeline de validação e uma observação honesta sobre viabilidade econômica.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* ============ TOKENS (compartilhados com a landing page) ============ */
+  :root{
+    --bg:        #0a0a0a;
+    --surface:   #111214;
+    --surface-2: #16181c;
+    --border:    #24262b;
+    --border-hi: #33363c;
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            min-height: 100vh;
-        }
+    --cyan:      #06b6d4;
+    --cyan-dim:  #0e7490;
+    --purple:    #7c3aed;
+    --amber:     #f59e0b;
+    --green:     #22c55e;
+    --red:       #ef4444;
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 40px 24px;
-        }
+    --text:      #e9e9ea;
+    --text-dim:  #96979c;
+    --text-faint:#5c5e64;
 
-        /* Header */
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 48px;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
+    --display: 'Space Grotesk', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', 'SFMono-Regular', Menlo, monospace;
+    --body: 'Inter', system-ui, sans-serif;
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 16px;
-            letter-spacing: 1px;
-        }
+    --radius: 10px;
+    --wrap: 1120px;
+  }
 
-        .logo svg {
-            color: var(--cyan);
-        }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(124,58,237,.14), transparent 60%),
+      radial-gradient(ellipse 900px 600px at 90% 5%, rgba(6,182,212,.10), transparent 60%);
+    pointer-events:none;
+    z-index:0;
+  }
+  .wrap{ max-width:var(--wrap); margin:0 auto; padding:0 1.5rem; position:relative; z-index:1; }
+  a{ color:inherit; text-decoration:none; }
+  :focus-visible{ outline:2px solid var(--cyan); outline-offset:3px; }
 
-        .status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            border-radius: 50px;
-            font-size: 13px;
-            color: var(--green);
-        }
+  h1,h2,h3,h4{ font-family:var(--display); letter-spacing:-0.02em; color:var(--text); }
+  .eyebrow{
+    font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--cyan); display:flex; align-items:center; gap:.5rem; margin-bottom:1rem;
+  }
+  .eyebrow::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--cyan); box-shadow:0 0 8px var(--cyan); }
 
-        .pulse {
-            width: 8px;
-            height: 8px;
-            background: var(--green);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
+  section{ position:relative; z-index:1; padding:4.5rem 0; }
+  section h2{ font-size:clamp(1.5rem,3vw,2.1rem); }
+  .section-sub{ color:var(--text-dim); max-width:640px; margin-top:.6rem; font-size:1rem; }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
+  .pass-chip{
+    display:inline-flex; align-items:center; gap:.4rem;
+    font-family:var(--mono); font-size:.78rem; color:var(--green);
+    background:rgba(34,197,94,.08); border:1px solid rgba(34,197,94,.25);
+    padding:.3rem .65rem; border-radius:6px;
+  }
+  .pass-chip::before{ content:"✓"; font-weight:700; }
 
-        h1 {
-            font-size: 32px;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 8px;
-        }
+  .btn{
+    display:inline-flex; align-items:center; gap:.55rem;
+    font-family:var(--mono); font-size:.85rem; font-weight:500;
+    padding:.85rem 1.4rem; border-radius:7px; border:1px solid transparent;
+    transition:transform .15s, filter .15s, border-color .15s;
+  }
+  .btn:hover{ transform:translateY(-1px); }
+  .btn-primary{ background:var(--cyan); color:#04141a; }
+  .btn-primary:hover{ filter:brightness(1.1); }
+  .btn-outline{ border-color:var(--border-hi); color:var(--text); }
+  .btn-outline:hover{ border-color:var(--cyan); color:var(--cyan); }
 
-        .subtitle {
-            color: var(--text-dim);
-            font-size: 15px;
-            margin-bottom: 48px;
-        }
+  /* ============ NAVBAR (idêntico à landing page) ============ */
+  .navbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,10,10,.85); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-content{ display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .logo{ display:flex; align-items:center; gap:.55rem; font-family:var(--mono); font-weight:600; font-size:.95rem; letter-spacing:.03em; }
+  .logo .dot{ width:8px; height:8px; border-radius:50%; background:var(--cyan); box-shadow:0 0 10px var(--cyan); }
+  .logo span.dim{ color:var(--text-dim); font-weight:400; }
+  .nav-links{ display:flex; align-items:center; gap:2rem; font-size:.9rem; color:var(--text-dim); }
+  .nav-links a:hover{ color:var(--text); }
+  .nav-cta{
+    font-family:var(--mono); font-size:.82rem; color:var(--bg) !important;
+    background:var(--cyan); padding:.5rem 1rem; border-radius:6px;
+    transition:filter .15s;
+  }
+  .nav-cta:hover{ filter:brightness(1.1); }
 
-        /* Cards */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            margin-bottom: 48px;
-        }
+  /* ============ CABEÇALHO DA PÁGINA ============ */
+  .page-header{ padding:3.6rem 0 2.6rem; border-bottom:1px solid var(--border); }
+  .page-header h1{ font-size:clamp(1.9rem,4vw,2.6rem); margin-bottom:.8rem; }
+  .page-header .section-sub{ max-width:680px; }
+  .header-meta{
+    display:flex; gap:1.6rem; flex-wrap:wrap; margin-top:1.6rem;
+    font-family:var(--mono); font-size:.78rem; color:var(--text-faint);
+  }
+  .header-meta strong{ color:var(--text-dim); font-weight:500; }
 
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
-            text-align: center;
-        }
+  /* ============ CARTÕES DE MÉTRICAS ============ */
+  .metrics-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1.1rem; }
+  .metric-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:1.5rem 1.4rem;
+  }
+  .metric-card .metric-label{ font-family:var(--mono); font-size:.72rem; letter-spacing:.04em; text-transform:uppercase; color:var(--text-faint); margin-bottom:.6rem; }
+  .metric-card .metric-value{ font-family:var(--display); font-size:2.1rem; font-weight:700; line-height:1; }
+  .metric-card .metric-value.cyan{ color:var(--cyan); }
+  .metric-card .metric-value.purple{ color:var(--purple); }
+  .metric-card .metric-value.green{ color:var(--green); }
+  .metric-card .metric-sub{ font-size:.8rem; color:var(--text-dim); margin-top:.5rem; }
 
-        .card-label {
-            font-size: 11px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
+  /* ============ TABELA DE DESEMPENHO ============ */
+  .perf-table-wrap{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    overflow:hidden; margin-top:1rem;
+  }
+  table{ width:100%; border-collapse:collapse; }
+  thead th{
+    text-align:left; font-family:var(--mono); font-size:.72rem; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--text-faint); padding:1rem 1.3rem; border-bottom:1px solid var(--border); font-weight:500;
+  }
+  tbody td{ padding:1rem 1.3rem; border-bottom:1px solid var(--border); font-size:.9rem; vertical-align:middle; }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody tr.highlight{ background:rgba(6,182,212,.05); }
+  tbody tr.nodata td{ color:var(--text-faint); }
+  .horizon-cell{ font-family:var(--mono); font-weight:600; }
+  .acc-cell{ font-family:var(--mono); font-weight:600; white-space:nowrap; }
+  .acc-cell.sig{ color:var(--cyan); }
+  .acc-cell.flat{ color:var(--text-dim); }
+  .bar-cell{ width:40%; }
+  .bar-track{
+    position:relative; height:8px; background:var(--surface-2); border-radius:4px; overflow:visible;
+    border:1px solid var(--border);
+  }
+  .bar-fill{ position:absolute; top:0; left:0; height:100%; border-radius:4px; background:var(--text-faint); }
+  .bar-fill.sig{ background:linear-gradient(90deg,var(--cyan),var(--purple)); }
+  .baseline-mark{
+    position:absolute; top:-3px; bottom:-3px; width:2px; background:var(--amber); opacity:.8;
+  }
+  .table-legend{ display:flex; gap:1.6rem; flex-wrap:wrap; margin-top:1rem; font-size:.8rem; color:var(--text-faint); font-family:var(--mono); }
+  .table-legend span{ display:inline-flex; align-items:center; gap:.4rem; }
+  .legend-swatch{ width:10px; height:10px; border-radius:2px; display:inline-block; }
 
-        .card-value {
-            font-size: 36px;
-            font-weight: 800;
-            color: var(--cyan);
-        }
+  /* ============ PIPELINE DE VALIDAÇÃO (padrão reutilizado) ============ */
+  .pipeline-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:1rem; margin-top:2.4rem; }
+  .pipeline-step{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:1.4rem 1.2rem;
+  }
+  .pipeline-step .step-index{ font-family:var(--mono); font-size:.7rem; color:var(--purple); margin-bottom:.7rem; display:block; }
+  .pipeline-step h4{ font-size:.95rem; margin-bottom:.45rem; }
+  .pipeline-step p{ font-size:.82rem; color:var(--text-dim); }
 
-        .card-value.green { color: var(--green); }
-        .card-value.yellow { color: #f59e0b; }
+  /* ============ NOTA HONESTA ============ */
+  .honest-section{ border-top:1px solid var(--border); }
+  .honest-box{
+    background:rgba(245,158,11,.06); border:1px solid rgba(245,158,11,.3);
+    border-radius:var(--radius); padding:2rem 2.2rem; display:flex; gap:1.3rem; align-items:flex-start;
+  }
+  .honest-box .icon{ font-size:1.6rem; line-height:1; flex-shrink:0; margin-top:.15rem; }
+  .honest-box h3{ color:var(--amber); font-size:1.15rem; margin-bottom:.6rem; }
+  .honest-box p{ color:var(--text-dim); font-size:.94rem; margin-bottom:.6rem; }
+  .honest-box p:last-child{ margin-bottom:0; }
+  .honest-box strong{ color:var(--text); }
+  .honest-verdict{
+    margin-top:1rem; padding-top:1rem; border-top:1px dashed rgba(245,158,11,.3);
+    font-family:var(--mono); font-size:.85rem; display:flex; gap:2rem; flex-wrap:wrap;
+  }
+  .honest-verdict div span.k{ display:block; color:var(--text-faint); font-size:.7rem; text-transform:uppercase; letter-spacing:.05em; margin-bottom:.3rem; }
+  .honest-verdict div span.v{ color:var(--text); }
+  .honest-verdict .v.neg{ color:var(--red); }
+  .honest-verdict .v.pos{ color:var(--green); }
 
-        .card-sub {
-            font-size: 12px;
-            color: var(--text-dim);
-            margin-top: 4px;
-        }
+  /* ============ RODAPÉ (idêntico à landing page) ============ */
+  footer{ border-top:1px solid var(--border); padding:3rem 0 2.2rem; }
+  .footer-grid{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:2rem; }
+  .footer-brand p{ color:var(--text-faint); font-size:.85rem; margin-top:.4rem; }
+  .footer-links{ display:flex; gap:1.8rem; flex-wrap:wrap; font-size:.88rem; color:var(--text-dim); }
+  .footer-links a:hover{ color:var(--cyan); }
+  .footer-bottom{ margin-top:2.4rem; padding-top:1.6rem; border-top:1px solid var(--border); font-size:.8rem; color:var(--text-faint); display:flex; justify-content:space-between; flex-wrap:wrap; gap:.6rem; }
 
-        /* Tabela */
-        .table-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 48px;
-        }
-
-        .table-header {
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border);
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .table-wrapper {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-
-        th {
-            text-align: right;
-            padding: 14px 16px;
-            color: var(--text-muted);
-            font-weight: 500;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th:first-child { text-align: left; }
-
-        td {
-            text-align: right;
-            padding: 12px 16px;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-            font-weight: 500;
-        }
-
-        td:first-child { text-align: left; font-weight: 600; }
-
-        .up { color: var(--green); }
-        .down { color: var(--red); }
-        .neutral { color: #f59e0b; }
-
-        .highlight-row {
-            background: rgba(6, 182, 212, 0.03);
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 24px 0;
-            border-top: 1px solid var(--border);
-        }
-
-        .footer p {
-            color: var(--text-muted);
-            font-size: 12px;
-        }
-
-        .footer a {
-            color: var(--cyan);
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        .last-update {
-            color: var(--text-dim);
-            font-size: 13px;
-            text-align: center;
-            margin-bottom: 48px;
-        }
-
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 60px;
-            color: var(--text-muted);
-        }
-
-        .loading-dots {
-            display: flex;
-            justify-content: center;
-            gap: 6px;
-            margin-bottom: 16px;
-        }
-
-        .loading-dots span {
-            width: 8px;
-            height: 8px;
-            background: var(--cyan);
-            border-radius: 50%;
-            animation: bounce 1.4s infinite ease-in-out;
-        }
-
-        .filter-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: var(--bg-card);
-            color: var(--text-dim);
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .filter-btn:hover {
-            border-color: var(--cyan);
-            color: #fff;
-            background: rgba(6,182,212,0.1);
-        }
-
-        .filter-btn.active {
-            background: rgba(6,182,212,0.2);
-            border-color: var(--cyan);
-            color: var(--cyan);
-            font-weight: 600;
-        }
-
-        .loading-dots span:nth-child(1) { animation-delay: 0s; }
-        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
-        }
-
-        /* Responsivo */
-        @media (max-width: 768px) {
-            .cards-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .card-value {
-                font-size: 28px;
-            }
-            h1 {
-                font-size: 24px;
-            }
-        }
-    </style>
+  /* ============ RESPONSIVO ============ */
+  @media (max-width:860px){
+    .metrics-grid{ grid-template-columns:1fr 1fr; }
+    .pipeline-grid{ grid-template-columns:1fr 1fr; }
+    .nav-links{ gap:1.1rem; font-size:.82rem; }
+    .nav-links a:not(.nav-cta){ display:none; }
+    .bar-cell{ width:30%; }
+  }
+  @media (max-width:640px){
+    thead{ display:none; }
+    table, tbody, tr, td{ display:block; width:100%; }
+    tbody tr{ padding:1rem 1.3rem; }
+    tbody td{ border:none; padding:.35rem 0; display:flex; justify-content:space-between; gap:1rem; }
+    tbody td.bar-cell{ display:block; padding-top:.6rem; }
+    tbody td::before{ content:attr(data-label); font-family:var(--mono); font-size:.7rem; color:var(--text-faint); text-transform:uppercase; }
+    tbody tr:not(:last-child){ border-bottom:1px solid var(--border); }
+  }
+  @media (max-width:520px){
+    section{ padding:3rem 0; }
+    .metrics-grid{ grid-template-columns:1fr; }
+    .pipeline-grid{ grid-template-columns:1fr; }
+    .honest-box{ flex-direction:column; padding:1.5rem; }
+    .footer-bottom{ flex-direction:column; }
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <a href="https://torch-ai-official.github.io/trader-ai/" class="logo">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                </svg>
-                <span>EVENTHORIZON AI</span>
-            </a>
-            <div class="status">
-                <span class="pulse"></span>
-                Dados em tempo real
-            </div>
-        </div>
 
-        <h1>Painel de Auditoria Pública</h1>
-        <p class="subtitle">Métricas verificadas diretamente na API da Binance. Dados brutos disponíveis para download.</p>
-
-        <!-- Cards de Métricas -->
-        <div class="cards-grid" id="metrics-cards">
-            <div class="loading">
-                <div class="loading-dots">
-                    <span></span><span></span><span></span>
-                </div>
-                <p>Carregando métricas...</p>
-            </div>
-        </div>
-
-        <!-- Adicione ANTES da tabela -->
-        <div class="filter-bar" style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-            <span style="font-size:13px;color:#94a3b8;">Mostrar últimos:</span>
-            <button onclick="filtrarTrades(100)" class="filter-btn">100 trades</button>
-            <button onclick="filtrarTrades(500)" class="filter-btn">500 trades</button>
-            <button onclick="filtrarTrades(1000)" class="filter-btn">1.000 trades</button>
-            <button onclick="filtrarTrades(0)" class="filter-btn active">Todos</button>
-        </div>
-
-        <!-- Tabela de Performance -->
-        <div class="table-section">
-            <div class="table-header">Performance por Moeda e Horizonte</div>
-            <div class="table-wrapper" id="performance-table">
-                <div class="loading">
-                    <div class="loading-dots">
-                        <span></span><span></span><span></span>
-                    </div>
-                    <p>Carregando dados de performance...</p>
-                </div>
-            </div>
-        </div>
-
-        <p class="last-update" id="update-time">Última atualização: --</p>
-
-        <!-- Footer -->
-        <div class="footer">
-            <p>
-                Dados verificados via API da Binance. 
-                <a href="dados.json" target="_blank">Download dos dados brutos (JSON)</a>
-            </p>
-            <p style="margin-top: 4px;">EventHorizon AI &copy; 2026 — Feito em Bauru, Brasil</p>
-        </div>
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar">
+  <div class="wrap nav-content">
+    <a href="index.html" class="logo"><span class="dot"></span>EVENTHORIZON<span class="dim">-AI</span></a>
+    <div class="nav-links">
+      <a href="index.html#products">Produtos</a>
+      <a href="index.html#validation">Validação</a>
+      <a href="index.html#contact">Contato</a>
+      <a href="https://github.com/EventHorizon-ia/EventHorizon" target="_blank" rel="noopener">GitHub</a>
+      <a href="index.html#contact" class="nav-cta">Aplicar para piloto</a>
     </div>
+  </div>
+</nav>
 
-    <script>
-        let dadosAcumulados = null;
-        let cacheJanelas = {};   // {100: dados, 500: dados, 1000: dados}
+<!-- ══ CABEÇALHO DA PÁGINA ══ -->
+<header class="page-header">
+  <div class="wrap">
+    <div class="eyebrow">Painel de auditoria · EventHorizon Crypto</div>
+    <h1>Resultados de treinamento e validação</h1>
+    <p class="section-sub">
+      Um relatório estático com os resultados obtidos durante o treinamento e a validação walk-forward do modelo EventHorizon Crypto (BTC/USDT). Sem feed em tempo real, sem dependência externa de dados — todos os números aqui estão embutidos diretamente nesta página.
+    </p>
+    <div class="header-meta">
+      <span><strong>Modelo:</strong> Transformer + BiLSTM, 14 features</span>
+      <span><strong>Período de treinamento:</strong> 365 dias (2025–2026)</span>
+      <span><strong>Período de validação:</strong> 90 dias (walk-forward honesto)</span>
+    </div>
+  </div>
+</header>
 
-        // Carrega acumulado na inicialização
-        fetch('dados.json?t=' + Date.now())
-            .then(r => r.json())
-            .then(acumulado => {
-                dadosAcumulados = acumulado;
-                renderMetrics(acumulado);
-                renderPerformance(acumulado, 0);
-                document.getElementById('update-time').innerText =
-                    'Última atualização: ' + (acumulado.ultima_atualizacao || '--');
-            })
-            .catch(err => console.error('Erro ao carregar dados:', err));
+<!-- ══ CARTÕES DE MÉTRICAS ══ -->
+<section>
+  <div class="wrap">
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Acurácia média (5s–1h)</div>
+        <div class="metric-value">50,7%</div>
+        <div class="metric-sub">Em 8 horizontes curtos/médios</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Melhor horizonte</div>
+        <div class="metric-value cyan">5s</div>
+        <div class="metric-sub">60,5% de acurácia no melhor epoch de validação</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Vantagem significativa (5s)</div>
+        <div class="metric-value purple">+8 pp</div>
+        <div class="metric-sub">vs. baseline de 52%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Amostras de validação</div>
+        <div class="metric-value green">~1,5M</div>
+        <div class="metric-sub">Janela walk-forward expandida</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        function filtrarTrades(n) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
+<!-- ══ TABELA DE DESEMPENHO ══ -->
+<section id="performance">
+  <div class="wrap">
+    <div class="eyebrow">Desempenho por horizonte</div>
+    <h2>Acurácia no melhor epoch de validação</h2>
+    <p class="section-sub">A baseline (marca âmbar) é o benchmark de 52% de direção ingênua usado em toda a validação do EventHorizon Crypto. Apenas o horizonte de 5s supera essa marca com margem estatisticamente significativa.</p>
 
-            if (n === 0) {
-                renderPerformance(dadosAcumulados, 0);
-                return;
-            }
+    <div class="perf-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Horizonte</th>
+            <th>Acurácia</th>
+            <th class="bar-cell">vs. baseline (52%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight">
+            <td class="horizon-cell" data-label="Horizonte">5s</td>
+            <td class="acc-cell sig" data-label="Acurácia">60,5%</td>
+            <td class="bar-cell" data-label="vs. baseline">
+              <div class="bar-track"><div class="bar-fill sig" style="width:86.4%"></div><div class="baseline-mark" style="left:74.3%"></div></div>
+            </td>
+          </tr>
+          <tr>
+            <td class="horizon-cell" data-label="Horizonte">15s</td>
+            <td class="acc-cell flat" data-label="Acurácia">52,4%</td>
+            <td class="bar-cell" data-label="vs. baseline">
+              <div class="bar-track"><div class="bar-fill" style="width:74.9%"></div><div class="baseline-mark" style="left:74.3%"></div></div>
+            </td>
+          </tr>
+          <tr>
+            <td class="horizon-cell" data-label="Horizonte">30s</td>
+            <td class="acc-cell flat" data-label="Acurácia">48,0%</td>
+            <td class="bar-cell" data-label="vs. baseline">
+              <div class="bar-track"><div class="bar-fill" style="width:68.6%"></div><div class="baseline-mark" style="left:74.3%"></div></div>
+            </td>
+          </tr>
+          <tr>
+            <td class="horizon-cell" data-label="Horizonte">1min</td>
+            <td class="acc-cell flat" data-label="Acurácia">50,0%</td>
+            <td class="bar-cell" data-label="vs. baseline">
+              <div class="bar-track"><div class="bar-fill" style="width:71.4%"></div><div class="baseline-mark" style="left:74.3%"></div></div>
+            </td>
+          </tr>
+          <tr>
+            <td class="horizon-cell" data-label="Horizonte">5min</td>
+            <td class="acc-cell flat" data-label="Acurácia">50,2%</td>
+            <td class="bar-cell" data-label="vs. baseline">
+              <div class="bar-track"><div class="bar-fill" style="width:71.7%"></div><div class="baseline-mark" style="left:74.3%"></div></div>
+            </td>
+          </tr>
+          <tr>
+            <td class="horizon-cell" data-label="Horizonte">15min</td>
+            <td class="acc-cell flat" data-label="Acurácia">49,8%</td>
+            <td class="bar-cell" data-label="vs. baseline">
+              <div class="bar-track"><div class="bar-fill" style="width:71.1%"></div><div class="baseline-mark" style="left:74.3%"></div></div>
+            </td>
+          </tr>
+          <tr>
+            <td class="horizon-cell" data-label="Horizonte">30min</td>
+            <td class="acc-cell flat" data-label="Acurácia">50,5%</td>
+            <td class="bar-cell" data-label="vs. baseline">
+              <div class="bar-track"><div class="bar-fill" style="width:72.1%"></div><div class="baseline-mark" style="left:74.3%"></div></div>
+            </td>
+          </tr>
+          <tr>
+            <td class="horizon-cell" data-label="Horizonte">1h</td>
+            <td class="acc-cell flat" data-label="Acurácia">50,5%</td>
+            <td class="bar-cell" data-label="vs. baseline">
+              <div class="bar-track"><div class="bar-fill" style="width:72.1%"></div><div class="baseline-mark" style="left:74.3%"></div></div>
+            </td>
+          </tr>
+          <tr>
+            <td class="horizon-cell" data-label="Horizonte">5h</td>
+            <td class="acc-cell flat" data-label="Acurácia">54,0%</td>
+            <td class="bar-cell" data-label="vs. baseline">
+              <div class="bar-track"><div class="bar-fill" style="width:77.1%"></div><div class="baseline-mark" style="left:74.3%"></div></div>
+            </td>
+          </tr>
+          <tr class="nodata">
+            <td class="horizon-cell" data-label="Horizonte">1d</td>
+            <td class="acc-cell" data-label="Acurácia">— sem dados</td>
+            <td class="bar-cell" data-label="vs. baseline">
+              <div class="bar-track"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-legend">
+      <span><span class="legend-swatch" style="background:linear-gradient(90deg,var(--cyan),var(--purple));"></span> Vantagem estatisticamente significativa</span>
+      <span><span class="legend-swatch" style="background:var(--text-faint);"></span> Dentro do ruído da baseline</span>
+      <span><span class="legend-swatch" style="background:var(--amber);"></span> Marca da baseline de 52%</span>
+    </div>
+  </div>
+</section>
 
-            // Se já está em cache, usa direto
-            if (cacheJanelas[n]) {
-                renderPerformance(cacheJanelas[n], n);
-                return;
-            }
+<!-- ══ PIPELINE DE VALIDAÇÃO ══ -->
+<section id="validation-methods">
+  <div class="wrap">
+    <div class="eyebrow">Metodologia aplicada</div>
+    <h2>Pipeline de validação</h2>
+    <p class="section-sub">A figura de 60,5% em 5s não é um número bruto de backtest — ela passou por cinco verificações separadas antes de ser publicada aqui.</p>
 
-            // Busca o arquivo da janela específica
-            document.getElementById('performance-table').innerHTML =
-                '<div class="loading"><div class="loading-dots"><span></span><span></span><span></span></div><p>Carregando últimos ' + n + ' trades...</p></div>';
+    <div class="pipeline-grid">
+      <div class="pipeline-step">
+        <span class="step-index">01</span>
+        <h4>Walk-forward, amostragem espaçada</h4>
+        <p>As janelas de validação são espaçadas no tempo, nunca adjacentes aos dados de treinamento, para evitar vazamento temporal.</p>
+      </div>
+      <div class="pipeline-step">
+        <span class="step-index">02</span>
+        <h4>Block bootstrap</h4>
+        <p>Reamostrado com múltiplos tamanhos de bloco para verificar que o intervalo de confiança não é um artefato de um único tamanho de bloco.</p>
+      </div>
+      <div class="pipeline-step">
+        <span class="step-index">03</span>
+        <h4>Teste de permutação</h4>
+        <p>Os alvos são embaralhados e o modelo é reavaliado para confirmar que a vantagem desaparece quando o sinal real é destruído.</p>
+      </div>
+      <div class="pipeline-step">
+        <span class="step-index">04</span>
+        <h4>Gap bootstrap</h4>
+        <p>A diferença entre o desempenho real e o permutado é bootstrapada diretamente para testar a significância da vantagem em si.</p>
+      </div>
+      <div class="pipeline-step">
+        <span class="step-index">05</span>
+        <h4>Estabilidade temporal</h4>
+        <p>Os resultados são divididos em partições de 15 dias para confirmar que a vantagem se mantém ao longo do tempo, não só em uma janela sortuda.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-            fetch(`dados_${n}.json?t=` + Date.now())
-                .then(r => r.json())
-                .then(dados => {
-                    cacheJanelas[n] = dados;
-                    renderPerformance(dados, n);
-                })
-                .catch(() => {
-                    // Fallback: se o arquivo não existir ainda, avisa o usuário
-                    document.getElementById('performance-table').innerHTML =
-                        '<div class="loading"><p>⌛ Dados por janela ainda não disponíveis — aguarde o próximo ciclo de atualização.</p></div>';
-                });
-        }
+<!-- ══ NOTA HONESTA ══ -->
+<section class="honest-section">
+  <div class="wrap">
+    <div class="eyebrow">Nota honesta</div>
+    <h2>Vantagem real, porém pouco lucrativa na prática</h2>
+    <div class="honest-box" style="margin-top:1.6rem;">
+      <span class="icon">⚠️</span>
+      <div>
+        <h3>A vantagem em 5s é real — mas as taxas de exchange a anulam</h3>
+        <p>A <strong>vantagem de +8 pp no horizonte de 5 segundos é estatisticamente significativa</strong>: ela sobrevive à validação walk-forward, ao block bootstrap, ao teste de permutação e ao gap bootstrap. Isso não é ruído.</p>
+        <p>Também é <strong>economicamente inviável para um trader de varejo sob as taxas padrão da Binance</strong>. O PnL líquido é negativo em todos os níveis de taxa VIP que testamos nesse horizonte — a vantagem é consumida pelos custos de negociação antes de virar lucro.</p>
+        <p>Estamos publicando isso como um estudo de caso completo: a validação prova que a vantagem existe, e a análise de taxas prova por que ela não se traduz em negociação de varejo lucrativa. As duas partes importam.</p>
+        <div class="honest-verdict">
+          <div><span class="k">Vantagem estatística</span><span class="v pos">Significativa (+8 pp)</span></div>
+          <div><span class="k">PnL líquido, todos os níveis de taxa</span><span class="v neg">Negativo</span></div>
+          <div><span class="k">Viabilidade para varejo</span><span class="v neg">Não viável</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        function renderMetrics(data) {
-            const grid = document.getElementById('metrics-cards');
-            const acuraciaGeral = data.acuracia_geral || data.acuracia || 0;
-            const profitFactor = data.profit_factor || 0;
-            const totalTrades = data.total_trades || 0;
-            const melhoresHorizontes = data.melhores_horizontes || 0;
+<!-- ══ RODAPÉ (idêntico à landing page) ══ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><span class="dot"></span>EVENTHORIZON<span class="dim">-AI</span></div>
+        <p>Pesquisa temporal em IA e sistemas de previsão.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/EventHorizon-ia/EventHorizon" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/EventHorizon-ia/eventhorizon-crypto" target="_blank" rel="noopener">Crypto (prod)</a>
+        <a href="https://github.com/EventHorizon-ia/eventhorizon-demand" target="_blank" rel="noopener">Demand (prod)</a>
+        <a href="https://github.com/EventHorizon-ia/honest-validation-toolkit" target="_blank" rel="noopener">Validation Toolkit</a>
+        <a href="https://www.tabnews.com.br/" target="_blank" rel="noopener">TabNews</a>
+        <a href="index.html#contact">Contato</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>As previsões são estimativas estatísticas, não aconselhamento de investimento. O desempenho passado de validação não garante resultados futuros.</span>
+      <span>&copy; 2026 EventHorizon-AI</span>
+    </div>
+  </div>
+</footer>
 
-            grid.innerHTML = `
-                <div class="card">
-                    <div class="card-label">Acurácia Global</div>
-                    <div class="card-value ${acuraciaGeral >= 52 ? 'green' : 'yellow'}">${acuraciaGeral}%</div>
-                    <div class="card-sub">Média todos horizontes</div>
-                </div>
-                <div class="card">
-                    <div class="card-label">Profit Factor</div>
-                    <div class="card-value ${profitFactor >= 1.2 ? 'green' : 'yellow'}">${profitFactor}</div>
-                    <div class="card-sub">Lucro Bruto / Prejuízo</div>
-                </div>
-                <div class="card">
-                    <div class="card-label">Trades Verificados</div>
-                    <div class="card-value">${Number(totalTrades).toLocaleString()}</div>
-                    <div class="card-sub">Acumulados</div>
-                </div>
-                <div class="card">
-                    <div class="card-label">Horizontes Ativos</div>
-                    <div class="card-value">${melhoresHorizontes}</div>
-                    <div class="card-sub">Com acurácia > 50%</div>
-                </div>
-            `;
-        }
-
-        function renderPerformance(data, filtroN) {
-            const tableDiv = document.getElementById('performance-table');
-            const tableHeader = document.querySelector('.table-header');
-            
-            if (filtroN > 0) {
-                tableHeader.innerHTML = `Performance <span style="font-size:11px;color:var(--cyan);">(últimos ${filtroN} trades)</span>`;
-            } else {
-                tableHeader.innerHTML = 'Performance por Moeda e Horizonte';
-            }
-            
-            if (!data.performance || data.performance.length === 0) {
-                tableDiv.innerHTML = '<div class="loading"><p>📊 Nenhum dado de performance disponível ainda.</p></div>';
-                return;
-            }
-
-            let html = `
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Moeda</th>
-                            <th>5s</th>
-                            <th>15s</th>
-                            <th>30s</th>
-                            <th>1min</th>
-                            <th>5min</th>
-                            <th>15min</th>
-                            <th>30min</th>
-                            <th>1h</th>
-                            <th>Trades</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-
-            data.performance.forEach((moeda, idx) => {
-                const rowClass = idx === 0 ? 'highlight-row' : '';
-                html += `<tr class="${rowClass}">
-                    <td><strong>${moeda.symbol}</strong></td>
-                    ${moeda.acuracia_5s !== undefined ? `<td class="${getColor(moeda.acuracia_5s)}">${moeda.acuracia_5s}%</td>` : '<td>—</td>'}
-                    ${moeda.acuracia_15s !== undefined ? `<td class="${getColor(moeda.acuracia_15s)}">${moeda.acuracia_15s}%</td>` : '<td>—</td>'}
-                    ${moeda.acuracia_30s !== undefined ? `<td class="${getColor(moeda.acuracia_30s)}">${moeda.acuracia_30s}%</td>` : '<td>—</td>'}
-                    ${moeda.acuracia_60s !== undefined ? `<td class="${getColor(moeda.acuracia_60s)}">${moeda.acuracia_60s}%</td>` : '<td>—</td>'}
-                    ${moeda.acuracia_300s !== undefined ? `<td class="${getColor(moeda.acuracia_300s)}">${moeda.acuracia_300s}%</td>` : '<td>—</td>'}
-                    ${moeda.acuracia_900s !== undefined ? `<td class="${getColor(moeda.acuracia_900s)}">${moeda.acuracia_900s}%</td>` : '<td>—</td>'}
-                    ${moeda.acuracia_1800s !== undefined ? `<td class="${getColor(moeda.acuracia_1800s)}">${moeda.acuracia_1800s}%</td>` : '<td>—</td>'}
-                    ${moeda.acuracia_3600s !== undefined ? `<td class="${getColor(moeda.acuracia_3600s)}">${moeda.acuracia_3600s}%</td>` : '<td>—</td>'}
-                    <td>${Number(moeda.total_trades || 0).toLocaleString()}</td>
-                </tr>`;
-            });
-
-            html += '</tbody></table>';
-            tableDiv.innerHTML = html;
-        }
-
-        function getColor(valor) {
-            if (valor >= 55) return 'up';
-            if (valor >= 48) return 'neutral';
-            return 'down';
-        }
-    </script>
 </body>
 </html>
