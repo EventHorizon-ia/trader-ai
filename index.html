@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
-<title>EventHorizon-AI — Sistemas de Previsão Validados Estatisticamente</title>
-<meta name="description" content="A EventHorizon-AI constrói e valida sistemas de previsão para séries temporais — direção do mercado cripto e demanda no varejo — com a mesma pipeline estatística rigorosa antes de qualquer lançamento. Prova, não promessas.">
+<title>EventHorizon-AI — Previsão e Validação para Séries Temporais</title>
+<meta name="description" content="A EventHorizon-AI constrói e valida sistemas de previsão para séries temporais com rigor estatístico — de mercados cripto à demanda no varejo. Validação estatística e viabilidade econômica são tratadas como hipóteses separadas.">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -166,7 +166,8 @@
 
   /* ============ PIPELINE DE VALIDAÇÃO ============ */
   .pipeline{ border-top:1px solid var(--border); }
-  .pipeline-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1.1rem; margin-top:2.8rem; position:relative; }
+  .pipeline-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:1.1rem; margin-top:2.8rem; position:relative; }
+  .pipeline-grid.cols-4{ grid-template-columns:repeat(4,1fr); }
   .pipeline-step{
     background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
     padding:1.6rem 1.4rem; position:relative;
@@ -239,7 +240,7 @@
       <div class="eyebrow">Pesquisa e produtos em IA temporal</div>
       <h1>Prova, não <em>promessas.</em></h1>
       <p class="hero-desc">
-        A EventHorizon-AI constrói sistemas de previsão para mercados de criptomoedas e demanda no varejo e submete cada um deles à mesma pipeline de validação estatística antes de qualquer lançamento. Sem backtests escolhidos à dedo — walk-forward, bootstrap e testes de permutação, publicados abertamente.
+        A EventHorizon-AI constrói sistemas de previsão para séries temporais e submete cada modelo a uma pipeline rigorosa de validação estatística. Depois, separa a pergunta estatística da pergunta de negócio: uma melhoria mensurável no modelo só importa se também puder gerar valor no mundo real.
       </p>
       <div class="hero-cta">
         <a href="#products" class="btn btn-primary">Ver produtos →</a>
@@ -266,7 +267,7 @@
 
 <div class="trust-bar">
   <div class="wrap trust-items">
-    <div>Validação estatística em <span>4 etapas</span> para todos os produtos</div>
+    <div>Validação estatística em <span>4 etapas</span>, depois validação de mercado</div>
     <div>Biblioteca de validação <span>open source</span></div>
     <div>Limitações <span>documentadas, não escondidas</span></div>
   </div>
@@ -288,7 +289,7 @@
             <div class="product-name">EventHorizon Crypto</div>
             <div class="product-tag">BTC/USDT · horizonte de 5 segundos</div>
           </div>
-          <span class="pass-chip">Validado</span>
+          <span class="pass-chip">Validação estatística</span>
         </div>
         <div class="product-metric cyan">+8 pp</div>
         <div class="product-metric-label">vantagem sobre a baseline — 60% vs 52% de acurácia direcional</div>
@@ -306,13 +307,17 @@
             <div class="product-name">EventHorizon Demand</div>
             <div class="product-tag">Demanda no varejo · conjunto de dados M5 (Walmart)</div>
           </div>
-          <span class="pass-chip">Validado</span>
+          <span class="pass-chip">Validação estatística</span>
         </div>
         <div class="product-metric purple">30%</div>
         <div class="product-metric-label">melhoria no WAPE — 30,9% vs 44,4% da baseline sazonal</div>
         <div class="product-honest">
           <span>ℹ️</span>
-          <span><strong>Status:</strong> estatisticamente significativo em 7 de 7 lojas testadas (bootstrap por data, gap pareado vs. baseline). Atualmente aceitando parceiros de piloto.</span>
+          <span>
+            <strong>Status:</strong>
+            melhoria estatisticamente significativa em 7 de 7 lojas testadas.
+            A validação técnica está concluída; a validação de mercado continua em andamento.
+          </span>
         </div>
         <a href="#contact" class="btn btn-outline">Aplicar para piloto →</a>
       </div>
@@ -326,7 +331,7 @@
   <div class="wrap">
     <div class="eyebrow">Metodologia</div>
     <h2>A pipeline de validação</h2>
-    <p class="section-sub">Cada produto acima passa por estas quatro verificações, nesta ordem, antes de um único número ser publicado.</p>
+    <p class="section-sub">Cada produto acima passa por estas cinco etapas, nesta ordem — da estatística à pergunta de valor no mundo real.</p>
 
     <div class="pipeline-grid">
       <div class="pipeline-step">
@@ -351,12 +356,72 @@
         <span class="step-index">04 / teste de permutação</span>
         <h4>Verificação da hipótese nula</h4>
         <p>Os rótulos são embaralhados e o modelo é reavaliado para confirmar que a vantagem observada não é produto do acaso.</p>
+        <span class="pipeline-connector"></span>
+      </div>
+      <div class="pipeline-step">
+        <span class="step-index">05 / market validation</span>
+        <h4>Valor no mundo real</h4>
+        <p>
+          Depois da validação estatística, investigamos se o erro de previsão
+          representa uma perda relevante e se existe um problema operacional
+          que o sistema consegue melhorar.
+        </p>
       </div>
     </div>
 
     <div class="pipeline-lib">
       <p>A metodologia completa é entregue como uma biblioteca Python instalável: <code>honest-validation-toolkit</code></p>
       <a href="https://github.com/EventHorizon-ia/honest-validation-toolkit" target="_blank" rel="noopener" class="btn btn-outline">Ver no GitHub →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ O QUE VALIDA / O QUE NÃO VALIDA ══ -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Além da estatística</div>
+    <h2>Validação estatística não é validação de negócio.</h2>
+    <p class="section-sub">
+      Um modelo pode apresentar uma melhoria estatisticamente significativa
+      e ainda assim não gerar valor suficiente para justificar sua adoção.
+    </p>
+
+    <div class="pipeline-grid cols-4" style="margin-top:2.8rem;">
+      <div class="pipeline-step">
+        <span class="step-index">01 / ESTATÍSTICA</span>
+        <h4>O resultado é real?</h4>
+        <p>
+          Testamos incerteza, dependência temporal, significância e
+          estabilidade do desempenho observado.
+        </p>
+      </div>
+
+      <div class="pipeline-step">
+        <span class="step-index">02 / OPERAÇÃO</span>
+        <h4>O erro importa?</h4>
+        <p>
+          Investigamos se erros de previsão geram perdas, desperdícios,
+          rupturas ou outras consequências relevantes.
+        </p>
+      </div>
+
+      <div class="pipeline-step">
+        <span class="step-index">03 / PROCESSO</span>
+        <h4>Existe um problema não resolvido?</h4>
+        <p>
+          Comparamos a previsão com os processos que o negócio já utiliza
+          para tomar decisões.
+        </p>
+      </div>
+
+      <div class="pipeline-step">
+        <span class="step-index">04 / VALOR</span>
+        <h4>Existe espaço para melhoria?</h4>
+        <p>
+          A pergunta final não é apenas se o modelo funciona, mas se ele
+          consegue melhorar uma decisão que já tem valor econômico.
+        </p>
+      </div>
     </div>
   </div>
 </section>
